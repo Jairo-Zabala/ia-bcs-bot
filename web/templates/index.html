@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Banco Caja Social - Asesor Virtual</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/bcs-ico.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
@@ -18,8 +19,13 @@
                 <div class="slogan">Más banco. Más amigo.</div>
                 <div class="status"><span class="dot"></span> Asesor Virtual en línea</div>
             </div>
-            <div class="header-actions">
-                <button class="btn-header" id="settingsBtn" title="Ajustes de voz">⚙️</button>
+        <div class="header-actions">
+                <button class="btn-header" id="settingsBtn" title="Ajustes de voz">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
             </div>
         </div>
 
@@ -38,15 +44,30 @@
 
         <!-- Input -->
         <div class="input-area">
-            <button class="btn-mic" id="micBtn" title="Grabar voz">🎤</button>
-            <button class="btn-stop" id="stopBtn" title="Detener audio">⏹️</button>
+            <button class="btn-mic" id="micBtn" title="Grabar voz">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+            <button class="btn-stop" id="stopBtn" title="Detener audio">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                </svg>
+            </button>
             <input
                 type="text"
                 id="messageInput"
                 placeholder="Escriba su mensaje..."
                 autocomplete="off"
             >
-            <button class="btn-send" id="sendBtn" title="Enviar">➤</button>
+            <button class="btn-send" id="sendBtn" title="Enviar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+            </button>
         </div>
 
         <!-- Voice Controls (hidden by default) -->
@@ -54,10 +75,12 @@
             <div class="control-group">
                 <label for="voiceSelect">Voz</label>
                 <select id="voiceSelect">
+                    <option value="en-US-AvaMultilingualNeural" selected>Ava HD (Multilingüe)</option>
+                    <option value="en-US-AndrewMultilingualNeural">Andrew HD (Multilingüe)</option>
+                    <option value="en-US-EmmaMultilingualNeural">Emma HD (Multilingüe)</option>
                     <option value="es-CO-SalomeNeural">Salome (Colombiana)</option>
                     <option value="es-CO-GonzaloNeural">Gonzalo (Colombiano)</option>
                     <option value="es-MX-DaliaNeural">Dalia (Mexicana)</option>
-                    <option value="es-ES-ElviraNeural">Elvira (Española)</option>
                 </select>
             </div>
             <div class="control-group">

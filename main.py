@@ -44,25 +44,29 @@ BANNER = """
 """
 
 
-def obtener_api_key() -> str:
-    """Get the Gemini API key from environment variables or user input."""
+def obtener_config_azure() -> dict:
+    """Get Azure configuration from environment variables."""
     load_dotenv()
-    api_key = os.getenv("GEMINI_API_KEY")
 
-    if not api_key:
-        print("\n[AVISO] No se encontro GEMINI_API_KEY en las variables de entorno.")
-        print("   Puede configurarla de las siguientes formas:")
-        print("   1. Crear un archivo .env con: GEMINI_API_KEY=su_clave_aqui")
-        print("   2. Exportar la variable: export GEMINI_API_KEY=su_clave_aqui")
-        print()
-        api_key = input("   O ingrese su API key de Gemini ahora: ").strip()
+    config = {
+        "endpoint": os.getenv("AZURE_OPENAI_ENDPOINT"),
+        "api_key": os.getenv("AZURE_OPENAI_KEY"),
+        "deployment_name": os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "gpt-4o-mini"),
+        "api_version": os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21"),
+        "speech_key": os.getenv("AZURE_SPEECH_KEY"),
+        "speech_region": os.getenv("AZURE_SPEECH_REGION", "eastus2"),
+    }
 
-    if not api_key:
-        print("[ERROR] Se requiere una API key de Gemini para continuar.")
-        print("   Obtenga una en: https://aistudio.google.com/apikey")
+    if not config["endpoint"] or not config["api_key"]:
+        print("\n[ERROR] Variables de Azure no configuradas.")
+        print("   Configure las siguientes variables en el archivo .env:")
+        print("   - AZURE_OPENAI_ENDPOINT")
+        print("   - AZURE_OPENAI_KEY")
+        print("   - AZURE_SPEECH_KEY")
+        print("   - AZURE_SPEECH_REGION")
         sys.exit(1)
 
-    return api_key
+    return config
 
 
 def procesar_comando(comando: str, voz_activa: bool, mic_activo: bool) -> tuple[bool, bool, bool]:
@@ -120,20 +124,20 @@ def main():
         action="store_true",
         help="Activar entrada por micrófono (speech-to-text)",
     )
-    parser.add_argument(
-        "--modelo",
-        default="gemini-2.5-flash",
-        help="Modelo de Gemini a usar (default: gemini-2.5-flash)",
-    )
     args = parser.parse_args()
 
     print(BANNER)
 
-    # Configure API
-    api_key = obtener_api_key()
+    # Configure Azure
+    config = obtener_config_azure()
 
-    print("Inicializando asesor virtual...")
-    asesor = AsesorBancoCajaSocial(api_key=api_key, model_name=args.modelo)
+    print("Inicializando asesor virtual (Azure OpenAI)...")
+    asesor = AsesorBancoCajaSocial(
+        endpoint=config["endpoint"],
+        api_key=config["api_key"],
+        deployment_name=config["deployment_name"],
+        api_version=config["api_version"],
+    )
     print("Asesor listo. Puede empezar a hacer sus preguntas.\n")
 
     voz_activa = args.voz
@@ -151,7 +155,7 @@ def main():
     console.print(Panel(Markdown(saludo), title="Asesor", border_style="green", padding=(1, 2)))
     console.print()
     if voz_activa:
-        ruta = texto_a_voz(saludo, reproducir=True)
+        ruta = texto_a_voz(saludo, config["speech_key"], config["speech_region"], reproducir=True)
         archivos_audio.append(ruta)
 
     # Main loop
@@ -160,7 +164,7 @@ def main():
             # Get user input
             if mic_activo:
                 print("─" * 50)
-                mensaje = escuchar_microfono()
+                mensaje = escuchar_microfono(config["speech_key"], config["speech_region"])
                 if mensaje is None:
                     continuar = input("   (Escriba su mensaje o presione Enter para intentar de nuevo): ").strip()
                     if continuar:
@@ -194,7 +198,7 @@ def main():
 
             # Play voice if active
             if voz_activa:
-                ruta = texto_a_voz(respuesta, reproducir=True)
+                ruta = texto_a_voz(respuesta, config["speech_key"], config["speech_region"], reproducir=True)
                 archivos_audio.append(ruta)
 
         except KeyboardInterrupt:

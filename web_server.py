@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
 Web server for the Banco Caja Social Virtual Advisor.
-Provides a REST API for the web interface.
+Provides a REST API for the web interface using Azure OpenAI and Azure Speech.
 """
 
-import asyncio
 import io
 import os
 import sys
@@ -12,14 +11,14 @@ import subprocess
 import tempfile
 import threading
 import webbrowser
+
 from flask import Flask, request, jsonify, send_file, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
-import edge_tts
-import speech_recognition as sr
 from pydub import AudioSegment
 
 from app.bot import AsesorBancoCajaSocial
+from app.voice import texto_a_voz_bytes, transcribir_audio
 
 
 def get_base_path():
@@ -31,7 +30,6 @@ def get_base_path():
 
 def abrir_navegador(url: str):
     """Open browser, preferring Chrome with fallback to default."""
-    # Common Chrome paths on macOS
     chrome_paths = [
         '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
         '/Applications/Chromium.app/Contents/MacOS/Chromium',
@@ -43,7 +41,6 @@ def abrir_navegador(url: str):
                 return
             except Exception:
                 continue
-    # Fallback: default browser
     webbrowser.open(url)
 
 
@@ -59,12 +56,29 @@ app = Flask(
 )
 CORS(app)
 
-# Initialize advisor
-api_key = os.getenv("GEMINI_API_KEY")
-if not api_key:
-    raise ValueError("GEMINI_API_KEY no está configurada en las variables de entorno")
+# Validate required environment variables
+required_vars = [
+    "AZURE_OPENAI_ENDPOINT",
+    "AZURE_OPENAI_KEY",
+    "AZURE_OPENAI_DEPLOYMENT_NAME",
+    "AZURE_SPEECH_KEY",
+    "AZURE_SPEECH_REGION",
+]
+for var in required_vars:
+    if not os.getenv(var):
+        raise ValueError(f"{var} no está configurada en las variables de entorno")
 
-asesor = AsesorBancoCajaSocial(api_key=api_key, model_name="gemini-2.5-flash")
+# Initialize advisor with Azure OpenAI
+asesor = AsesorBancoCajaSocial(
+    endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+    api_key=os.getenv("AZURE_OPENAI_KEY"),
+    deployment_name=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
+    api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21"),
+)
+
+# Azure Speech credentials
+SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY")
+SPEECH_REGION = os.getenv("AZURE_SPEECH_REGION")
 
 
 @app.route('/')
@@ -79,18 +93,17 @@ def chat():
     try:
         data = request.get_json()
         mensaje = data.get('message', '').strip()
-        
+
         if not mensaje:
             return jsonify({'error': 'Mensaje vacio'}), 400
-        
-        # Get advisor response
+
         respuesta = asesor.responder(mensaje)
-        
+
         return jsonify({
             'response': respuesta,
             'status': 'success'
         })
-    
+
     except Exception as e:
         print(f"Error procesando mensaje: {e}")
         return jsonify({
@@ -124,30 +137,30 @@ def transcribe():
 
         audio_file = request.files['audio']
 
-        # Save uploaded webm to temp file
-        with tempfile.NamedTemporaryFile(suffix='.webm', delete=False) as tmp:
-            audio_file.save(tmp.name)
-            webm_path = tmp.name
+        # Save uploaded audio — use mktemp to avoid Windows file locking
+        webm_path = os.path.join(tempfile.gettempdir(), f'bcs_{os.getpid()}_{id(request)}.webm')
+        audio_file.save(webm_path)
 
-        # Convert webm to wav (speech_recognition requires wav/flac/aiff)
+        # Convert webm to wav (Azure Speech SDK requires wav)
         wav_path = webm_path.replace('.webm', '.wav')
         try:
             audio_segment = AudioSegment.from_file(webm_path, format='webm')
             audio_segment.export(wav_path, format='wav')
 
-            recognizer = sr.Recognizer()
-            with sr.AudioFile(wav_path) as source:
-                audio_data = recognizer.record(source)
-            text = recognizer.recognize_google(audio_data, language='es-CO')
-            return jsonify({'text': text, 'status': 'success'})
-        except sr.UnknownValueError:
-            return jsonify({'text': '', 'status': 'no_speech'})
-        except sr.RequestError as e:
-            return jsonify({'error': f'Recognition service error: {e}'}), 500
+            text = transcribir_audio(wav_path, SPEECH_KEY, SPEECH_REGION)
+
+            if text:
+                return jsonify({'text': text, 'status': 'success'})
+            else:
+                return jsonify({'text': '', 'status': 'no_speech'})
+
         finally:
             for f in [webm_path, wav_path]:
-                if os.path.exists(f):
-                    os.unlink(f)
+                try:
+                    if os.path.exists(f):
+                        os.unlink(f)
+                except OSError:
+                    pass
 
     except Exception as e:
         print(f'Error transcribing: {e}')
@@ -156,7 +169,7 @@ def transcribe():
 
 @app.route('/voz', methods=['POST'])
 def voz():
-    """Endpoint to generate audio with Edge TTS (Microsoft neural voices)."""
+    """Endpoint to generate audio with Azure Speech TTS."""
     try:
         data = request.get_json()
         texto = data.get('texto', '').strip()
@@ -164,12 +177,17 @@ def voz():
         if not texto:
             return jsonify({'error': 'Texto vacio'}), 400
 
-        # Generate audio with Edge TTS (selected neural voice)
-        voz = data.get('voz', 'es-CO-SalomeNeural')
-        buffer = io.BytesIO()
-        asyncio.run(_generar_audio_buffer(texto, buffer, voz))
-        buffer.seek(0)
+        voz_nombre = data.get('voz', 'es-CO-SalomeNeural')
 
+        audio_bytes = texto_a_voz_bytes(
+            texto=texto,
+            speech_key=SPEECH_KEY,
+            speech_region=SPEECH_REGION,
+            voz=voz_nombre,
+        )
+
+        buffer = io.BytesIO(audio_bytes)
+        buffer.seek(0)
         return send_file(buffer, mimetype='audio/mpeg')
 
     except Exception as e:
@@ -177,20 +195,12 @@ def voz():
         return jsonify({'error': 'Error generando audio'}), 500
 
 
-async def _generar_audio_buffer(texto: str, buffer: io.BytesIO, voz: str = "es-CO-SalomeNeural"):
-    """Generate audio with Edge TTS and write to buffer."""
-    communicate = edge_tts.Communicate(texto, voz)
-    async for chunk in communicate.stream():
-        if chunk["type"] == "audio":
-            buffer.write(chunk["data"])
-
-
 @app.route('/health', methods=['GET'])
 def health():
     """Health check endpoint."""
     return jsonify({
         'status': 'healthy',
-        'service': 'Banco Caja Social - Asesor Virtual'
+        'service': 'Banco Caja Social - Asesor Virtual (Azure)'
     })
 
 
@@ -202,7 +212,6 @@ if __name__ == '__main__':
     print(f"Servidor corriendo en: {url}")
     print("Presione Ctrl+C para detener el servidor\n")
 
-    # Open Chrome after a short delay so Flask can start
     threading.Timer(1.5, abrir_navegador, args=[url]).start()
 
     app.run(host='0.0.0.0', port=port, debug=False)

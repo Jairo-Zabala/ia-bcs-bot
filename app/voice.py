@@ -1,120 +1,219 @@
 """
 Voice module for the Banco Caja Social virtual advisor.
-Includes text-to-speech (TTS) via Edge TTS and optional speech-to-text (STT).
+Includes text-to-speech (TTS) and speech-to-text (STT) via Azure Speech SDK.
 """
 
-import asyncio
 import os
 import tempfile
 import platform
 
-import edge_tts
+import azure.cognitiveservices.speech as speechsdk
 
-# Colombian neural voice (female). Male alternative: "es-CO-GonzaloNeural"
-VOZ_DEFAULT = "es-CO-SalomeNeural"
+# Multilingual HD voice for better quality (supports Spanish)
+# Alternatives: "es-CO-SalomeNeural", "es-CO-GonzaloNeural"
+VOZ_DEFAULT = "en-US-AvaMultilingualNeural"
 
 
-def texto_a_voz(texto: str, voz: str = VOZ_DEFAULT, reproducir: bool = True) -> str:
+def _get_speech_config(speech_key: str, speech_region: str) -> speechsdk.SpeechConfig:
+    """Create a SpeechConfig with the given credentials."""
+    return speechsdk.SpeechConfig(subscription=speech_key, region=speech_region)
+
+
+def texto_a_voz(
+    texto: str,
+    speech_key: str,
+    speech_region: str,
+    voz: str = VOZ_DEFAULT,
+    reproducir: bool = True,
+) -> str:
     """
-    Convert text to audio using Microsoft Edge TTS (neural voices).
+    Convert text to audio using Azure Speech SDK (neural voices).
 
     Args:
         texto: Text to convert to speech.
+        speech_key: Azure Speech subscription key.
+        speech_region: Azure Speech region.
         voz: Neural voice name to use.
         reproducir: If True, plays the audio automatically.
 
     Returns:
         Path to the generated audio file.
     """
-    # Create temp file for audio
+    config = _get_speech_config(speech_key, speech_region)
+    config.speech_synthesis_voice_name = voz
+    config.set_speech_synthesis_output_format(
+        speechsdk.SpeechSynthesisOutputFormat.Audio48Khz192KBitRateMonoMp3
+    )
+
     with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
         ruta_audio = tmp.name
 
-    # Generate audio with Edge TTS (async)
-    asyncio.run(_generar_audio(texto, voz, ruta_audio))
+    audio_config = speechsdk.audio.AudioOutputConfig(filename=ruta_audio)
+    synthesizer = speechsdk.SpeechSynthesizer(speech_config=config, audio_config=audio_config)
+    result = synthesizer.speak_text_async(texto).get()
 
-    if reproducir:
-        reproducir_audio(ruta_audio)
+    if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+        if reproducir:
+            reproducir_audio(ruta_audio)
+    elif result.reason == speechsdk.ResultReason.Canceled:
+        cancellation = result.cancellation_details
+        print(f"[ERROR] TTS cancelado: {cancellation.reason}")
+        if cancellation.error_details:
+            print(f"    Detalle: {cancellation.error_details}")
 
     return ruta_audio
 
 
-async def _generar_audio(texto: str, voz: str, ruta: str):
-    """Generate audio using Edge TTS asynchronously."""
-    communicate = edge_tts.Communicate(texto, voz)
-    await communicate.save(ruta)
+def _build_ssml(texto: str, voz: str) -> str:
+    """
+    Build SSML markup for more natural-sounding speech.
+    Uses prosody adjustments for a friendly, conversational tone.
+    """
+    # Escape XML special characters
+    texto_escaped = (
+        texto.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&apos;")
+    )
+    
+    # Check if it's a multilingual voice
+    is_multilingual = "Multilingual" in voz
+    
+    if is_multilingual:
+        # Multilingual voices use lang tag to speak Spanish
+        return f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" 
+    xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="es-CO">
+    <voice name="{voz}">
+        <lang xml:lang="es-CO">
+            <prosody rate="-5%">
+                {texto_escaped}
+            </prosody>
+        </lang>
+    </voice>
+</speak>"""
+    else:
+        # Standard neural voices
+        return f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" 
+    xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="es-CO">
+    <voice name="{voz}">
+        <prosody rate="-5%" pitch="+2%">
+            {texto_escaped}
+        </prosody>
+    </voice>
+</speak>"""
+
+
+def texto_a_voz_bytes(
+    texto: str,
+    speech_key: str,
+    speech_region: str,
+    voz: str = VOZ_DEFAULT,
+) -> bytes:
+    """
+    Convert text to audio bytes using Azure Speech SDK with SSML.
+    Used by the web server to stream audio to the browser.
+
+    Returns:
+        Audio data as bytes (MP3).
+    """
+    config = _get_speech_config(speech_key, speech_region)
+    config.set_speech_synthesis_output_format(
+        speechsdk.SpeechSynthesisOutputFormat.Audio48Khz192KBitRateMonoMp3
+    )
+
+    synthesizer = speechsdk.SpeechSynthesizer(speech_config=config, audio_config=None)
+    ssml = _build_ssml(texto, voz)
+    result = synthesizer.speak_ssml_async(ssml).get()
+
+    if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+        return result.audio_data
+
+    cancellation = result.cancellation_details
+    raise RuntimeError(f"TTS falló: {cancellation.reason} - {cancellation.error_details}")
+
+
+def transcribir_audio(
+    ruta_audio: str,
+    speech_key: str,
+    speech_region: str,
+    idioma: str = "es-CO",
+) -> str | None:
+    """
+    Transcribe an audio file to text using Azure Speech SDK.
+
+    Args:
+        ruta_audio: Path to the audio file (WAV format).
+
+    Returns:
+        Recognized text or None if recognition failed.
+    """
+    config = _get_speech_config(speech_key, speech_region)
+    config.speech_recognition_language = idioma
+
+    audio_config = speechsdk.audio.AudioConfig(filename=ruta_audio)
+    recognizer = speechsdk.SpeechRecognizer(speech_config=config, audio_config=audio_config)
+    result = recognizer.recognize_once()
+
+    if result.reason == speechsdk.ResultReason.RecognizedSpeech:
+        return result.text
+    elif result.reason == speechsdk.ResultReason.NoMatch:
+        print("No se pudo entender el audio. Intente de nuevo.")
+    elif result.reason == speechsdk.ResultReason.Canceled:
+        cancellation = result.cancellation_details
+        print(f"[ERROR] Reconocimiento cancelado: {cancellation.reason}")
+    return None
+
+
+def escuchar_microfono(
+    speech_key: str,
+    speech_region: str,
+    idioma: str = "es-CO",
+) -> str | None:
+    """
+    Capture audio from microphone and convert to text using Azure Speech SDK.
+
+    Returns:
+        Recognized text or None if recognition failed.
+    """
+    config = _get_speech_config(speech_key, speech_region)
+    config.speech_recognition_language = idioma
+
+    recognizer = speechsdk.SpeechRecognizer(speech_config=config)
+
+    print("Escuchando... (hable ahora)")
+    result = recognizer.recognize_once()
+
+    if result.reason == speechsdk.ResultReason.RecognizedSpeech:
+        return result.text
+    elif result.reason == speechsdk.ResultReason.NoMatch:
+        print("No se detecto voz. Intente de nuevo.")
+    elif result.reason == speechsdk.ResultReason.Canceled:
+        cancellation = result.cancellation_details
+        print(f"[ERROR] Reconocimiento cancelado: {cancellation.reason}")
+        if cancellation.error_details:
+            print(f"    Detalle: {cancellation.error_details}")
+    return None
 
 
 def reproducir_audio(ruta: str):
-    """
-    Play an audio file based on the operating system.
-
-    Args:
-        ruta: Path to the audio file.
-    """
+    """Play an audio file based on the operating system."""
     sistema = platform.system()
     try:
-        if sistema == "Darwin":  # macOS
+        if sistema == "Darwin":
             os.system(f'afplay "{ruta}"')
         elif sistema == "Linux":
-            # Try different audio players
             if os.system("which mpg123 > /dev/null 2>&1") == 0:
                 os.system(f'mpg123 -q "{ruta}"')
             elif os.system("which ffplay > /dev/null 2>&1") == 0:
                 os.system(f'ffplay -nodisp -autoexit -loglevel quiet "{ruta}"')
             else:
-                print("[AVISO] No se encontro reproductor de audio. Instale mpg123: sudo apt install mpg123")
+                print("[AVISO] No se encontro reproductor de audio. Instale mpg123.")
         elif sistema == "Windows":
             os.system(f'start "" "{ruta}"')
-        else:
-            print(f"[AVISO] Sistema operativo no soportado para reproduccion: {sistema}")
     except Exception as e:
         print(f"[ERROR] Reproduciendo audio: {e}")
-
-
-def escuchar_microfono(timeout: int = 5, idioma: str = "es-CO") -> str | None:
-    """
-    Capture audio from microphone and convert to text using speech_recognition.
-
-    Args:
-        timeout: Max seconds to wait for speech.
-        idioma: Language code for recognition (defaults to Colombian Spanish).
-
-    Returns:
-        Recognized text or None if recognition failed.
-    """
-    try:
-        import speech_recognition as sr
-    except ImportError:
-        print("[AVISO] Para usar reconocimiento de voz, instale: pip install SpeechRecognition pyaudio")
-        return None
-
-    recognizer = sr.Recognizer()
-
-    try:
-        with sr.Microphone() as source:
-            print("Escuchando... (hable ahora)")
-            recognizer.adjust_for_ambient_noise(source, duration=0.5)
-            audio = recognizer.listen(source, timeout=timeout, phrase_time_limit=15)
-
-        print("Procesando su mensaje...")
-        texto = recognizer.recognize_google(audio, language=idioma)
-        return texto
-
-    except OSError as e:
-        print(f"[ERROR] Accediendo al microfono: {e}")
-        print("    Verifique que su microfono este conectado y tenga permisos.")
-        print("    En macOS: Configuracion del Sistema > Privacidad y Seguridad > Microfono")
-        return None
-    except sr.WaitTimeoutError:
-        print("No se detecto voz. Intente de nuevo.")
-        return None
-    except sr.UnknownValueError:
-        print("No se pudo entender el audio. Intente de nuevo.")
-        return None
-    except sr.RequestError as e:
-        print(f"[ERROR] Servicio de reconocimiento: {e}")
-        return None
 
 
 def limpiar_archivos_temporales(rutas: list[str]):

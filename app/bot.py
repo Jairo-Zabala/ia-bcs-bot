@@ -1,10 +1,9 @@
 """
-Google Gemini API integration module.
+Azure OpenAI API integration module.
 Configures the model with Banco Caja Social knowledge base and advisor personality.
 """
 
-from google import genai
-from google.genai import types
+from openai import AzureOpenAI
 from app.knowledge_base import obtener_conocimiento_completo
 
 
@@ -47,18 +46,24 @@ o visitar una oficina para más detalles.
 
 
 class AsesorBancoCajaSocial:
-    """Banco Caja Social chatbot advisor powered by Google Gemini."""
+    """Banco Caja Social chatbot advisor powered by Azure OpenAI."""
 
-    def __init__(self, api_key: str, model_name: str = "gemini-2.5-flash"):
+    def __init__(self, endpoint: str, api_key: str, deployment_name: str, api_version: str = "2024-10-21"):
         """
         Initialize the virtual advisor.
 
         Args:
-            api_key: Google Gemini API key.
-            model_name: Gemini model to use.
+            endpoint: Azure OpenAI endpoint URL.
+            api_key: Azure OpenAI API key.
+            deployment_name: Name of the deployed model.
+            api_version: Azure OpenAI API version.
         """
-        self.client = genai.Client(api_key=api_key)
-        self.model_name = model_name
+        self.client = AzureOpenAI(
+            azure_endpoint=endpoint,
+            api_key=api_key,
+            api_version=api_version,
+        )
+        self.deployment_name = deployment_name
         self.chat_history = []
 
     def responder(self, mensaje: str) -> str:
@@ -73,27 +78,20 @@ class AsesorBancoCajaSocial:
         """
         try:
             # Add user message to history
-            self.chat_history.append({
-                "role": "user",
-                "parts": [{"text": mensaje}]
-            })
-            
+            self.chat_history.append({"role": "user", "content": mensaje})
+
             # Generate response with system instruction and chat history
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=self.chat_history,
-                config=types.GenerateContentConfig(
-                    system_instruction=SYSTEM_PROMPT
-                )
+            response = self.client.chat.completions.create(
+                model=self.deployment_name,
+                messages=[{"role": "system", "content": SYSTEM_PROMPT}] + self.chat_history,
             )
-            
+
+            respuesta = response.choices[0].message.content
+
             # Add assistant response to history
-            self.chat_history.append({
-                "role": "model",
-                "parts": [{"text": response.text}]
-            })
-            
-            return response.text
+            self.chat_history.append({"role": "assistant", "content": respuesta})
+
+            return respuesta
         except Exception as e:
             return (
                 f"Disculpe, en este momento estoy presentando dificultades técnicas. "

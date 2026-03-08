@@ -93,8 +93,8 @@ function stopRecording() {
     micBtn.classList.remove('recording');
 }
 
-// ---- Audio (Edge TTS) ----
-let selectedEdgeVoice = 'es-CO-SalomeNeural';
+// ---- Audio (Azure TTS) ----
+let selectedEdgeVoice = 'en-US-AvaMultilingualNeural';
 function cleanTextForTTS(text) {
     let clean = text.replace(/\*\*(.+?)\*\*/g, '$1');
     clean = clean.replace(/\$([\d.,]+)/g, '$1 pesos');
