@@ -9,9 +9,9 @@ import platform
 
 import azure.cognitiveservices.speech as speechsdk
 
-# Multilingual HD voice for better quality (supports Spanish)
-# Alternatives: "es-CO-SalomeNeural", "es-CO-GonzaloNeural"
-VOZ_DEFAULT = "en-US-AvaMultilingualNeural"
+# Andrew Dragon HD - LLM-based voice with automatic emotional detection
+# Male voice, professional but friendly tone
+VOZ_DEFAULT = "en-US-Andrew:DragonHDLatestNeural"
 
 
 def _get_speech_config(speech_key: str, speech_region: str) -> speechsdk.SpeechConfig:
@@ -66,8 +66,8 @@ def texto_a_voz(
 
 def _build_ssml(texto: str, voz: str) -> str:
     """
-    Build SSML markup for more natural-sounding speech.
-    Uses prosody adjustments for a friendly, conversational tone.
+    Build SSML markup for warm, friendly bank advisor speech.
+    Uses prosody adjustments for a conversational, approachable tone.
     """
     # Escape XML special characters
     texto_escaped = (
@@ -78,29 +78,15 @@ def _build_ssml(texto: str, voz: str) -> str:
         .replace("'", "&apos;")
     )
     
-    # Check if it's a multilingual voice
-    is_multilingual = "Multilingual" in voz
-    
-    if is_multilingual:
-        # Multilingual voices use lang tag to speak Spanish
-        return f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" 
+    # Ava DragonHD automatically detects emotional context from text
+    # Uses <lang> tag to speak in Colombian Spanish
+    # Minimal prosody adjustments - let the HD voice handle naturalness
+    return f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" 
     xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="es-CO">
     <voice name="{voz}">
         <lang xml:lang="es-CO">
-            <prosody rate="-5%">
-                {texto_escaped}
-            </prosody>
-        </lang>
-    </voice>
-</speak>"""
-    else:
-        # Standard neural voices
-        return f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" 
-    xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="es-CO">
-    <voice name="{voz}">
-        <prosody rate="-5%" pitch="+2%">
             {texto_escaped}
-        </prosody>
+        </lang>
     </voice>
 </speak>"""
 

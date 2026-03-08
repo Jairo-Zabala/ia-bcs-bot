@@ -87,6 +87,15 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/favicon.ico')
+def favicon():
+    """Serve favicon for browser tab."""
+    return send_file(
+        os.path.join(app.static_folder, 'img', 'bcs-ico.png'),
+        mimetype='image/png'
+    )
+
+
 @app.route('/chat', methods=['POST'])
 def chat():
     """Endpoint to process user messages."""

@@ -94,7 +94,7 @@ function stopRecording() {
 }
 
 // ---- Audio (Azure TTS) ----
-let selectedEdgeVoice = 'en-US-AvaMultilingualNeural';
+let selectedEdgeVoice = null; // Will be set from dropdown on init
 function cleanTextForTTS(text) {
     let clean = text.replace(/\*\*(.+?)\*\*/g, '$1');
     clean = clean.replace(/\$([\d.,]+)/g, '$1 pesos');
@@ -262,6 +262,9 @@ function init() {
     voiceSelect.addEventListener('change', (e) => {
         selectedEdgeVoice = e.target.value;
     });
+
+    // Initialize voice from dropdown default
+    selectedEdgeVoice = voiceSelect.value;
 
     settingsBtn.addEventListener('click', () => {
         voiceControls.classList.toggle('visible');
