@@ -1,181 +1,205 @@
-<mxfile host="app.diagrams.net" modified="2026-03-08T03:07:00.000Z" agent="Mozilla/5.0" version="21.1.0" etag="bcs-bot-arch">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="29.6.1">
   <diagram name="Arquitectura BCS Bot" id="bcs-architecture">
-    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="30258" dy="17240" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        
-        <!-- CLIENTE - Navegador -->
-        <mxCell id="cliente-group" value="Cliente (Navegador Web)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
-          <mxGeometry x="40" y="200" width="180" height="280" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=light-dark(#E5E7EB,#FFFFFF);labelBackgroundColor=default;" value="Arquitectura BCS Bot" vertex="1">
+          <mxGeometry height="30" width="360" x="30" y="20" as="geometry" />
         </mxCell>
-        
-        <mxCell id="mic" value="🎙️&#xa;Micrófono" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="70" y="250" width="120" height="60" as="geometry" />
+        <mxCell id="subtitle" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=light-dark(#E5E7EB,#FFFFFF);labelBackgroundColor=default;" value="Vista simplificada de las peticiones y transporte de peticiones para el bot" vertex="1">
+          <mxGeometry height="20" width="520" x="30" y="50" as="geometry" />
         </mxCell>
-        
-        <mxCell id="ui" value="🖥️&#xa;Interfaz Web&#xa;(HTML/CSS/JS)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="70" y="330" width="120" height="60" as="geometry" />
+        <mxCell id="cliente-group" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#3b82f6;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=16;fontColor=#ffffff;spacingTop=12;" value="Cliente" vertex="1">
+          <mxGeometry height="430" width="230" x="20" y="110" as="geometry" />
         </mxCell>
-        
-        <mxCell id="speaker" value="🔊&#xa;Altavoz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="70" y="410" width="120" height="60" as="geometry" />
+        <mxCell id="browser" parent="1" style="shape=image;imageAspect=0;aspect=fixed;html=1;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=#0f172a;labelBorderColor=#0f172a;fontColor=#ffffff;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22b85e2bf0-3a2f-4cc2-ae5f-60fe5881a2a5%22%20x1%3D%229%22%20y1%3D%2215.834%22%20x2%3D%229%22%20y2%3D%225.788%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2332bedd%22%20%2F%3E%3Cstop%20offset%3D%220.175%22%20stop-color%3D%22%2332caea%22%20%2F%3E%3Cstop%20offset%3D%220.41%22%20stop-color%3D%22%2332d2f2%22%20%2F%3E%3Cstop%20offset%3D%220.775%22%20stop-color%3D%22%2332d4f5%22%20%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ctitle%3EMsPortalFx.base.images-15%3C%2Ftitle%3E%3Cg%20id%3D%22e3e31333-31f4-40d8-9886-d3a1c58d7679%22%3E%3Cg%3E%3Cpath%20d%3D%22M.5%2C5.788h17a0%2C0%2C0%2C0%2C1%2C0%2C0v9.478a.568.568%2C0%2C0%2C1-.568.568H1.068A.568.568%2C0%2C0%2C1%2C.5%2C15.266V5.788A0%2C0%2C0%2C0%2C1%2C.5%2C5.788Z%22%20fill%3D%22url(%23b85e2bf0-3a2f-4cc2-ae5f-60fe5881a2a5)%22%20%2F%3E%3Cpath%20d%3D%22M1.071%2C2.166H16.929a.568.568%2C0%2C0%2C1%2C.568.568V5.788a0%2C0%2C0%2C0%2C1%2C0%2C0H.5a0%2C0%2C0%2C0%2C1%2C0%2C0V2.734A.568.568%2C0%2C0%2C1%2C1.071%2C2.166Z%22%20fill%3D%22%230078d4%22%20%2F%3E%3Crect%20x%3D%222.787%22%20y%3D%223.248%22%20width%3D%2212.426%22%20height%3D%221.459%22%20rx%3D%220.284%22%20fill%3D%22%23f2f2f2%22%20%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E;fontSize=14;fontStyle=1;" value="Navegador web" vertex="1">
+          <mxGeometry height="96" width="80" x="95" y="155" as="geometry" />
         </mxCell>
-        
-        <!-- CLOUDFLARE -->
-        <mxCell id="cloudflare-group" value="Cloudflare" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
-          <mxGeometry x="280" y="300" width="140" height="100" as="geometry" />
+        <mxCell id="mic" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#020617;strokeColor=#60a5fa;fontSize=12;fontColor=#ffffff;" value="Micrófono&#xa;captura audio del usuario" vertex="1">
+          <mxGeometry height="60" width="170" x="50" y="290" as="geometry" />
         </mxCell>
-        
-        <mxCell id="tunnel" value="🔒&#xa;Quick Tunnel&#xa;HTTPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="295" y="340" width="110" height="50" as="geometry" />
+        <mxCell id="ui" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#020617;strokeColor=#60a5fa;fontSize=12;fontColor=#ffffff;" value="Interfaz web&#xa;envía peticiones HTTPS" vertex="1">
+          <mxGeometry height="60" width="170" x="50" y="375" as="geometry" />
         </mxCell>
-        
-        <!-- AZURE VM -->
-        <mxCell id="vm-group" value="Azure VM - Ubuntu 24.04" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
-          <mxGeometry x="480" y="180" width="180" height="340" as="geometry" />
+        <mxCell id="speaker" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#020617;strokeColor=#60a5fa;fontSize=12;fontColor=#ffffff;" value="Altavoz&#xa;reproduce la respuesta" vertex="1">
+          <mxGeometry height="60" width="170" x="50" y="460" as="geometry" />
         </mxCell>
-        
-        <mxCell id="flask" value="⚙️&#xa;Flask + Gunicorn&#xa;(Puerto 5000)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="500" y="230" width="140" height="60" as="geometry" />
+        <mxCell id="edge-group" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2b1606;strokeColor=#f97316;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=16;fontColor=#ffffff;spacingTop=12;" value="Exposición segura" vertex="1">
+          <mxGeometry height="240" width="220" x="310" y="200" as="geometry" />
         </mxCell>
-        
-        <mxCell id="pydub" value="🔄&#xa;pydub + FFmpeg&#xa;(WebM → WAV)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="500" y="310" width="140" height="60" as="geometry" />
+        <mxCell id="cdn" parent="1" style="shape=image;imageAspect=0;aspect=fixed;html=1;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=#2b1606;labelBorderColor=#2b1606;fontColor=#ffffff;image=data:image/svg+xml,%3Csvg%20id%3D%22b9c24df5-e0dd-4838-a385-7c11c2d34304%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22aa2ee697-e8d1-4da1-a8c5-64c8ebbb74cf%22%20x1%3D%229%22%20y1%3D%2213.83%22%20x2%3D%229%22%20y2%3D%221.07%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230078d4%22%20%2F%3E%3Cstop%20offset%3D%220.82%22%20stop-color%3D%22%235ea0ef%22%20%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ctitle%3EIcon-networking-73%3C%2Ftitle%3E%3Cpath%20d%3D%22M18%2C9.83A4%2C4%2C0%2C0%2C0%2C14.49%2C6%2C5.1%2C5.1%2C0%2C0%2C0%2C9.24%2C1.07a5.23%2C5.23%2C0%2C0%2C0-5%2C3.41A4.83%2C4.83%2C0%2C0%2C0%2C0%2C9.12a4.9%2C4.9%2C0%2C0%2C0%2C5.07%2C4.71l.44%2C0h8.21a.78.78%2C0%2C0%2C0%2C.22%2C0A4.09%2C4.09%2C0%2C0%2C0%2C18%2C9.83Z%22%20fill%3D%22url(%23aa2ee697-e8d1-4da1-a8c5-64c8ebbb74cf)%22%20%2F%3E%3Cpath%20id%3D%22f0276135-0079-4897-a518-21eb63472c16%22%20d%3D%22M6.63%2C6.82h5.06v7H6.63Z%22%20fill%3D%22%23f2f2f2%22%20%2F%3E%3Cpath%20id%3D%22e528878d-2ed7-4392-94e6-99c6fc971bcb%22%20d%3D%22M12.61%2C6.37l-3.49-2a.25.25%2C0%2C0%2C0-.31.15s0%2C.06%2C0%2C.08V16.68a.25.25%2C0%2C0%2C0%2C.24.25h.08l3.49-2.06a.25.25%2C0%2C0%2C0%2C.17-.23v-8A.26.26%2C0%2C0%2C0%2C12.61%2C6.37Z%22%20fill%3D%22%2350e6ff%22%20%2F%3E%3C%2Fsvg%3E;fontSize=13;fontStyle=1;" value="Punto de entrada" vertex="1">
+          <mxGeometry height="100" width="86" x="377" y="245" as="geometry" />
         </mxCell>
-        
-        <mxCell id="bot" value="🤖&#xa;Bot Engine&#xa;(Lógica + KB)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="500" y="390" width="140" height="60" as="geometry" />
+        <mxCell id="tunnel" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#f97316;fontSize=12;fontColor=#ffffff;" value="Quick Tunnel&#xa;reenvía al backend" vertex="1">
+          <mxGeometry height="60" width="140" x="350" y="375" as="geometry" />
         </mxCell>
-        
-        <mxCell id="kb" value="📚 Knowledge Base&#xa;Productos BCS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="500" y="465" width="140" height="40" as="geometry" />
+        <mxCell id="vm-group" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e1b35;strokeColor=#8b5cf6;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=16;fontColor=#ffffff;spacingTop=12;" value="Backend en Azure VM" vertex="1">
+          <mxGeometry height="620" width="380" x="610" y="95" as="geometry" />
         </mxCell>
-        
-        <!-- AZURE SPEECH -->
-        <mxCell id="speech-group" value="Azure Speech Services" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
-          <mxGeometry x="720" y="180" width="180" height="180" as="geometry" />
+        <mxCell id="vm" parent="1" style="shape=image;imageAspect=0;aspect=fixed;html=1;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=#1e1b35;labelBorderColor=#1e1b35;fontColor=#ffffff;image=data:image/svg+xml,%3Csvg%20id%3D%22fd454f1c-5506-44b8-874e-8814b8b2f70b%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22f34d9569-2bd0-4002-8f16-3d01d8106cb5%22%20x1%3D%228.88%22%20y1%3D%2212.21%22%20x2%3D%228.88%22%20y2%3D%220.21%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%230078d4%22%20%2F%3E%3Cstop%20offset%3D%220.82%22%20stop-color%3D%22%235ea0ef%22%20%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22bdb45a0b-eb58-4970-a60a-fb2ce314f866%22%20x1%3D%228.88%22%20y1%3D%2216.84%22%20x2%3D%228.88%22%20y2%3D%2212.21%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220.15%22%20stop-color%3D%22%23ccc%22%20%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23707070%22%20%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ctitle%3EIcon-compute-21%3C%2Ftitle%3E%3Crect%20x%3D%22-0.12%22%20y%3D%220.21%22%20width%3D%2218%22%20height%3D%2212%22%20rx%3D%220.6%22%20fill%3D%22url(%23f34d9569-2bd0-4002-8f16-3d01d8106cb5)%22%20%2F%3E%3Cpolygon%20points%3D%2211.88%204.46%2011.88%207.95%208.88%209.71%208.88%206.21%2011.88%204.46%22%20fill%3D%22%2350e6ff%22%20%2F%3E%3Cpolygon%20points%3D%2211.88%204.46%208.88%206.22%205.88%204.46%208.88%202.71%2011.88%204.46%22%20fill%3D%22%23c3f1ff%22%20%2F%3E%3Cpolygon%20points%3D%228.88%206.22%208.88%209.71%205.88%207.95%205.88%204.46%208.88%206.22%22%20fill%3D%22%239cebff%22%20%2F%3E%3Cpolygon%20points%3D%225.88%207.95%208.88%206.21%208.88%209.71%205.88%207.95%22%20fill%3D%22%23c3f1ff%22%20%2F%3E%3Cpolygon%20points%3D%2211.88%207.95%208.88%206.21%208.88%209.71%2011.88%207.95%22%20fill%3D%22%239cebff%22%20%2F%3E%3Cpath%20d%3D%22M12.49%2C15.84c-1.78-.28-1.85-1.56-1.85-3.63H7.11c0%2C2.07-.06%2C3.35-1.84%2C3.63a1%2C1%2C0%2C0%2C0-.89%2C1h9A1%2C1%2C0%2C0%2C0%2C12.49%2C15.84Z%22%20fill%3D%22url(%23bdb45a0b-eb58-4970-a60a-fb2ce314f866)%22%20%2F%3E%3C%2Fsvg%3E;fontSize=13;fontStyle=1;" value="Ubuntu 24.04" vertex="1">
+          <mxGeometry height="100" width="80" x="760" y="130" as="geometry" />
         </mxCell>
-        
-        <mxCell id="stt" value="🎤 → 📝&#xa;STT&#xa;Speech-to-Text&#xa;(es-CO)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="740" y="225" width="140" height="55" as="geometry" />
+        <mxCell id="flask" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#a78bfa;fontSize=13;fontColor=#ffffff;" value="API Flask + Gunicorn&#xa;recibe peticiones y coordina el flujo" vertex="1">
+          <mxGeometry height="70" width="220" x="690" y="270" as="geometry" />
         </mxCell>
-        
-        <mxCell id="tts" value="📝 → 🔊&#xa;TTS&#xa;Andrew DragonHD&#xa;(48kHz)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="740" y="295" width="140" height="55" as="geometry" />
+        <mxCell id="pydub" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#a78bfa;fontSize=13;fontColor=#ffffff;" value="Conversión de audio&#xa;transforma WebM a WAV" vertex="1">
+          <mxGeometry height="70" width="220" x="690" y="380" as="geometry" />
         </mxCell>
-        
-        <!-- AZURE OPENAI -->
-        <mxCell id="openai-group" value="Azure OpenAI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
-          <mxGeometry x="720" y="400" width="180" height="120" as="geometry" />
+        <mxCell id="bot" parent="1" style="shape=image;imageAspect=0;aspect=fixed;html=1;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=#1e1b35;labelBorderColor=#1e1b35;fontColor=#ffffff;image=data:image/svg+xml,%3Csvg%20id%3D%22eccfbced-10ca-487a-a425-bf34f9e15139%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22b915730c-dc69-4cd4-8cf3-619882b8e8ab%22%20cx%3D%2255.71%22%20cy%3D%2271.92%22%20r%3D%229%22%20gradientTransform%3D%22translate(-43.61%20-58.92)%20scale(0.94%200.94)%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220.67%22%20stop-color%3D%22%236bb9f2%22%20%2F%3E%3Cstop%20offset%3D%220.74%22%20stop-color%3D%22%2361b4f1%22%20%2F%3E%3Cstop%20offset%3D%220.85%22%20stop-color%3D%22%2347a8ef%22%20%2F%3E%3Cstop%20offset%3D%220.99%22%20stop-color%3D%22%231d94eb%22%20%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231b93eb%22%20%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Ctitle%3EIcon-machinelearning-165%3C%2Ftitle%3E%3Cpath%20id%3D%22f6a29e1b-194b-4d8d-8529-49edea7bbba0%22%20d%3D%22M9%2C.5A8.5%2C8.5%2C0%2C1%2C0%2C17.5%2C9%2C8.5%2C8.5%2C0%2C0%2C0%2C9%2C.5Z%22%20fill%3D%22url(%23b915730c-dc69-4cd4-8cf3-619882b8e8ab)%22%20%2F%3E%3Ccircle%20cx%3D%229%22%20cy%3D%229%22%20r%3D%227.03%22%20fill%3D%22%23fff%22%20%2F%3E%3Ccircle%20cx%3D%227.45%22%20cy%3D%229%22%20r%3D%220.77%22%20fill%3D%22%2332bedd%22%20%2F%3E%3Cpath%20d%3D%22M5.26%2C6.8H4.88a.29.29%2C0%2C0%2C0-.29.29v5.72a.59.59%2C0%2C0%2C0%2C.59.59h5.57a.29.29%2C0%2C0%2C0%2C.29-.3v-.38a.29.29%2C0%2C0%2C0-.29-.29h-5a.14.14%2C0%2C0%2C1-.14-.15V7.09A.29.29%2C0%2C0%2C0%2C5.26%2C6.8Z%22%20fill%3D%22%2332bedd%22%20%2F%3E%3Ccircle%20cx%3D%2210.55%22%20cy%3D%229%22%20r%3D%220.77%22%20fill%3D%22%2332bedd%22%20%2F%3E%3Cpath%20d%3D%22M12.42%2C4.6H7.23a.29.29%2C0%2C0%2C0-.29.3v.38a.29.29%2C0%2C0%2C0%2C.29.29h5a.15.15%2C0%2C0%2C1%2C.15.15v5.19a.29.29%2C0%2C0%2C0%2C.29.29h.38a.29.29%2C0%2C0%2C0%2C.29-.29V5.19a.59.59%2C0%2C0%2C0-.58-.59Z%22%20fill%3D%22%2332bedd%22%20%2F%3E%3C%2Fsvg%3E;fontSize=14;fontStyle=1;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Motor del bot&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;lógica de negocio" vertex="1">
+          <mxGeometry height="120" width="110" x="745" y="500" as="geometry" />
         </mxCell>
-        
-        <mxCell id="gpt" value="🧠&#xa;GPT-4o-mini&#xa;(Chat Completions)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="740" y="445" width="140" height="60" as="geometry" />
-        </mxCell>
-        
-        <!-- FLECHAS / CONEXIONES -->
-        <!-- 1. Mic -> Flask -->
-        <mxCell id="arrow1" value="① WebM" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1" source="mic" target="flask">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <!-- 2. UI -> Tunnel -->
-        <mxCell id="arrow2" value="② HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="ui" target="tunnel">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <!-- 3. Tunnel -> Flask -->
-        <mxCell id="arrow3" value="③ HTTP:5000" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#b85450;" edge="1" parent="1" source="tunnel" target="flask">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <!-- 4. Flask -> pydub -->
-        <mxCell id="arrow4" value="④" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1" source="flask" target="pydub">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <!-- 5. pydub -> STT -->
-        <mxCell id="arrow5" value="⑤ WAV" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;" edge="1" parent="1" source="pydub" target="stt">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <!-- 6. STT -> Flask (texto) -->
-        <mxCell id="arrow6" value="⑥ Texto" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="stt" target="bot">
+        <mxCell id="cDo2Tutr_NopcXhGn9LA-2" edge="1" parent="1" source="speech-group" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=classic;endFill=1;startArrow=classic;startFill=1;" target="openai-group">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="700" y="253" />
-              <mxPoint x="700" y="420" />
+              <mxPoint x="1420" y="260" />
+              <mxPoint x="1420" y="598" />
             </Array>
           </mxGeometry>
         </mxCell>
-        
-        <!-- 7-8. Bot -> GPT -->
-        <mxCell id="arrow78" value="⑦⑧ Chat API" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1" source="bot" target="gpt">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <!-- 9-10. GPT -> Bot (respuesta) -->
-        <mxCell id="arrow910" value="⑨⑩ Respuesta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;dashed=1;" edge="1" parent="1" source="gpt" target="flask">
+        <mxCell id="arrow13" edge="1" parent="1" source="bot" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#94a3b8;dashed=1;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="kb-advisor" value="13. Consulta base del asesor">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="810" y="550" />
-              <mxPoint x="570" y="550" />
+              <mxPoint x="800" y="690" />
+              <mxPoint x="940" y="690" />
             </Array>
           </mxGeometry>
         </mxCell>
-        
-        <!-- 11. Flask -> TTS -->
-        <mxCell id="arrow11" value="⑪ Texto" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;" edge="1" parent="1" source="flask" target="tts">
+        <mxCell id="speech-group" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#052e26;strokeColor=#10b981;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=16;fontColor=#ffffff;spacingTop=12;" value="Azure AI Speech" vertex="1">
+          <mxGeometry height="330" width="260" x="1060" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="speech" parent="1" style="shape=image;imageAspect=0;aspect=fixed;html=1;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=#052e26;labelBorderColor=#052e26;fontColor=#ffffff;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22e55d0c29-af1e-47f8-8687-3b57784a9fe2%22%20x1%3D%225.681%22%20y1%3D%22-0.862%22%20x2%3D%225.681%22%20y2%3D%2215.008%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%235ea0ef%22%20%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230078d4%22%20%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22b5f9ca8e-e44b-4da0-ac59-b444c0761c05%22%3E%3Cpath%20d%3D%22M7.3%2C7.019H17.341A.659.659%2C0%2C0%2C1%2C18%2C7.677v7.981a.66.66%2C0%2C0%2C1-.659.658h-4.11a.109.109%2C0%2C0%2C0-.067.023l-2.108%2C1.615a.219.219%2C0%2C0%2C1-.353-.174V16.426a.11.11%2C0%2C0%2C0-.109-.11H7.3a.659.659%2C0%2C0%2C1-.658-.658V7.677A.66.66%2C0%2C0%2C1%2C7.3%2C7.019Z%22%20fill%3D%22%2350e6ff%22%20%2F%3E%3Cpath%20d%3D%22M11.361.659v7.98A.659.659%2C0%2C0%2C1%2C10.7%2C9.3h-3.3a.11.11%2C0%2C0%2C0-.109.11v1.355a.22.22%2C0%2C0%2C1-.353.174L4.836%2C9.32A.109.109%2C0%2C0%2C0%2C4.769%2C9.3H.659A.66.66%2C0%2C0%2C1%2C0%2C8.639V.659A.659.659%2C0%2C0%2C1%2C.659%2C0H10.7A.66.66%2C0%2C0%2C1%2C11.361.659Z%22%20fill%3D%22url(%23e55d0c29-af1e-47f8-8687-3b57784a9fe2)%22%20%2F%3E%3Cpath%20d%3D%22M8.1%2C4.26a3.48%2C3.48%2C0%2C0%2C1-.07.7%2C3.688%2C3.688%2C0%2C0%2C1-.2.667%2C3.249%2C3.249%2C0%2C0%2C1-.329.615%2C4.03%2C4.03%2C0%2C0%2C1-.336.426.156.156%2C0%2C0%2C1-.226%2C0l-.031-.03a.159.159%2C0%2C0%2C1%2C0-.22%2C3.261%2C3.261%2C0%2C0%2C0%2C.3-.378%2C3.164%2C3.164%2C0%2C0%2C0%2C.477-1.153%2C3.242%2C3.242%2C0%2C0%2C0%2C0-1.262%2C3.13%2C3.13%2C0%2C0%2C0-.181-.6%2C3.311%2C3.311%2C0%2C0%2C0-.3-.553%2C3.107%2C3.107%2C0%2C0%2C0-.3-.38.16.16%2C0%2C0%2C1%2C0-.22l.032-.031a.156.156%2C0%2C0%2C1%2C.225%2C0%2C3.555%2C3.555%2C0%2C0%2C1%2C.336.428%2C3.453%2C3.453%2C0%2C0%2C1%2C.326.615%2C3.76%2C3.76%2C0%2C0%2C1%2C.2.667A3.3%2C3.3%2C0%2C0%2C1%2C8.1%2C4.26ZM6.924%2C3.3a2.516%2C2.516%2C0%2C0%2C0-.431-.693.155.155%2C0%2C0%2C0-.226%2C0l-.031.031a.154.154%2C0%2C0%2C0-.01.211%2C2.142%2C2.142%2C0%2C0%2C1%2C0%2C2.825.155.155%2C0%2C0%2C0%2C.01.212l.031.031a.155.155%2C0%2C0%2C0%2C.226%2C0%2C2.546%2C2.546%2C0%2C0%2C0%2C.431-.693%2C2.51%2C2.51%2C0%2C0%2C0%2C0-1.916Zm-1.238.3a1.134%2C1.134%2C0%2C0%2C1%2C.143.248%2C1.088%2C1.088%2C0%2C0%2C1%2C0%2C.824%2C1.011%2C1.011%2C0%2C0%2C1-.142.245.156.156%2C0%2C0%2C0%2C.014.205l.03.03a.159.159%2C0%2C0%2C0%2C.235-.012%2C1.421%2C1.421%2C0%2C0%2C0%2C.2-.334%2C1.444%2C1.444%2C0%2C0%2C0%2C.106-.547%2C1.486%2C1.486%2C0%2C0%2C0-.109-.547%2C1.359%2C1.359%2C0%2C0%2C0-.193-.332.158.158%2C0%2C0%2C0-.236-.013L5.7%2C3.4A.153.153%2C0%2C0%2C0%2C5.686%2C3.6Zm-2-.413H3.314A.314.314%2C0%2C0%2C0%2C3%2C3.5V5.018a.315.315%2C0%2C0%2C0%2C.314.314h.374a.314.314%2C0%2C0%2C1%2C.222.092l.937.935a.161.161%2C0%2C0%2C0%2C.111.046h0a.187.187%2C0%2C0%2C0%2C.187-.187V2.3a.189.189%2C0%2C0%2C0-.189-.189h0a.162.162%2C0%2C0%2C0-.112.046L3.91%2C3.1A.315.315%2C0%2C0%2C1%2C3.688%2C3.188Z%22%20fill%3D%22%23fff%22%20%2F%3E%3Cpath%20d%3D%22M15.211%2C10.932a.831.831%2C0%2C1%2C1-.83.83A.83.83%2C0%2C0%2C1%2C15.211%2C10.932Zm-3.48.837a.831.831%2C0%2C1%2C0%2C.831-.83A.831.831%2C0%2C0%2C0%2C11.731%2C11.769Zm-2.649%2C0a.831.831%2C0%2C1%2C0%2C.831-.83A.831.831%2C0%2C0%2C0%2C9.082%2C11.769Z%22%20fill%3D%22%23fff%22%20%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E;fontSize=14;fontStyle=1;" value="Speech Service" vertex="1">
+          <mxGeometry height="105" width="90" x="1145" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="stt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#022c22;strokeColor=#34d399;fontSize=13;fontColor=#ffffff;" value="Speech to Text&#xa;convierte audio en texto" vertex="1">
+          <mxGeometry height="65" width="170" x="1105" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="tts" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#022c22;strokeColor=#34d399;fontSize=13;fontColor=#ffffff;" value="Text to Speech&#xa;convierte texto en audio" vertex="1">
+          <mxGeometry height="65" width="170" x="1105" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="openai-group" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#38bdf8;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=16;fontColor=#ffffff;spacingTop=12;" value="Azure OpenAI" vertex="1">
+          <mxGeometry height="235" width="260" x="1060" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="openai" parent="1" style="shape=image;imageAspect=0;aspect=fixed;html=1;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=#082f49;labelBorderColor=#082f49;fontColor=#ffffff;image=data:image/svg+xml,%3Csvg%20id%3D%22uuid-adbdae8e-5a41-46d1-8c18-aa73cdbfee32%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22uuid-2a7407aa-b787-48dd-a96a-0d81ab6e93bb%22%20cx%3D%22-67.981%22%20cy%3D%22793.199%22%20r%3D%22.45%22%20gradientTransform%3D%22translate(-17939.03%2020368.029)%20rotate(45)%20scale(25.091%20-34.149)%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2383b9f9%22%20%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230078d4%22%20%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22m0%2C2.7v12.6c0%2C1.491%2C1.209%2C2.7%2C2.7%2C2.7h12.6c1.491%2C0%2C2.7-1.209%2C2.7-2.7V2.7c0-1.491-1.209-2.7-2.7-2.7H2.7C1.209%2C0%2C0%2C1.209%2C0%2C2.7ZM10.8%2C0v3.6c0%2C3.976%2C3.224%2C7.2%2C7.2%2C7.2h-3.6c-3.976%2C0-7.199%2C3.222-7.2%2C7.198v-3.598c0-3.976-3.224-7.2-7.2-7.2h3.6c3.976%2C0%2C7.2-3.224%2C7.2-7.2Z%22%20fill%3D%22url(%23uuid-2a7407aa-b787-48dd-a96a-0d81ab6e93bb)%22%20stroke-width%3D%220%22%20%2F%3E%3C%2Fsvg%3E;fontSize=14;fontStyle=1;" value="Modelo GPT-4o-mini" vertex="1">
+          <mxGeometry height="105" width="90" x="1145" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="kb" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#9ca3af;fontSize=13;fontColor=#ffffff;" value="Base de productos&#xa;catálogo BCS" vertex="1">
+          <mxGeometry height="70" width="160" x="660" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="kb-advisor" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#9ca3af;fontSize=13;fontColor=#ffffff;" value="Base para el asesor&#xa;guías y respuestas" vertex="1">
+          <mxGeometry height="70" width="160" x="860" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" edge="1" parent="1" source="mic" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#60a5fa;fontSize=11;" target="flask" value="1. Audio WebM" />
+        <mxCell id="arrow2" edge="1" parent="1" source="ui" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#f97316;fontSize=11;" target="cdn" value="2. Solicitud HTTPS">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="660" y="260" />
-              <mxPoint x="660" y="323" />
+              <mxPoint x="280" y="405" />
+              <mxPoint x="280" y="295" />
             </Array>
           </mxGeometry>
         </mxCell>
-        
-        <!-- 12. TTS -> Flask (audio) -->
-        <mxCell id="arrow12" value="⑫ MP3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="tts" target="flask">
-          <mxGeometry relative="1" as="geometry">
+        <mxCell id="arrow3" edge="1" parent="1" source="edge-group" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#f97316;fontSize=11;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="flask" value="3. Reenvío al backend">
+          <mxGeometry relative="1" x="0.4182" y="15" as="geometry">
+            <mxPoint as="offset" />
             <Array as="points">
-              <mxPoint x="680" y="323" />
-              <mxPoint x="680" y="280" />
+              <mxPoint x="550" y="320" />
+              <mxPoint x="550" y="320" />
             </Array>
           </mxGeometry>
         </mxCell>
-        
-        <!-- 13. Flask -> Speaker -->
-        <mxCell id="arrow13" value="⑬ Audio Stream" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;dashed=1;" edge="1" parent="1" source="flask" target="speaker">
-          <mxGeometry relative="1" as="geometry">
+        <mxCell id="arrow4" edge="1" parent="1" source="flask" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#8b5cf6;fontSize=11;" target="pydub" value="4. Normaliza audio" />
+        <mxCell id="arrow5" edge="1" parent="1" source="pydub" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#22c55e;fontSize=11;" target="stt" value="5. Envía WAV a STT" />
+        <mxCell id="arrow6" edge="1" parent="1" source="stt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=light-dark(#6F0000,#990000);dashed=1;fontSize=11;fillColor=#a20025;startArrow=classic;startFill=1;" target="bot" value="6. Recibe texto transcrito">
+          <mxGeometry relative="1" x="0.7413" y="-10" as="geometry">
+            <mxPoint as="offset" />
             <Array as="points">
-              <mxPoint x="460" y="260" />
-              <mxPoint x="460" y="440" />
+              <mxPoint x="1030" y="308" />
+              <mxPoint x="1030" y="560" />
             </Array>
           </mxGeometry>
         </mxCell>
-        
-        <!-- LEYENDA -->
-        <mxCell id="legend" value="LEYENDA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="40" y="520" width="300" height="100" as="geometry" />
+        <mxCell id="arrow7" edge="1" parent="1" source="bot" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#38bdf8;fontSize=11;" target="openai" value="7. Consulta modelo GPT" />
+        <mxCell id="arrow8" edge="1" parent="1" source="openai" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#38bdf8;dashed=1;fontSize=11;" target="bot" value="8. Recibe respuesta del modelo" />
+        <mxCell id="arrow9" edge="1" parent="1" source="bot" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#22c55e;fontSize=11;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="tts" value="9. Envía texto a TTS">
+          <mxGeometry relative="1" x="-0.2806" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="800" y="480" />
+              <mxPoint x="1010" y="480" />
+              <mxPoint x="1010" y="388" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        
-        <mxCell id="leg1" value="→ Solicitud (request)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="50" y="545" width="130" height="20" as="geometry" />
+        <mxCell id="arrow10" edge="1" parent="1" source="tts" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#6F0000;dashed=1;fontSize=11;fillColor=#a20025;startArrow=classic;startFill=1;" target="flask" value="10. Recibe audio MP3">
+          <mxGeometry relative="1" x="0.7363" y="-15" as="geometry">
+            <mxPoint x="1" as="offset" />
+            <Array as="points">
+              <mxPoint x="1190" y="450" />
+              <mxPoint x="1020" y="450" />
+              <mxPoint x="1020" y="305" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        
-        <mxCell id="leg2" value="⇢ Respuesta (response)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="50" y="570" width="130" height="20" as="geometry" />
+        <mxCell id="arrow11" edge="1" parent="1" source="flask" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#60a5fa;dashed=1;fontSize=11;" target="speaker" value="11. Devuelve audio al navegador">
+          <mxGeometry relative="1" x="0.2877" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="800" y="350" />
+              <mxPoint x="575" y="350" />
+              <mxPoint x="575" y="490" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        
-        <mxCell id="leg3" value="①-⑬ Flujo numerado" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="50" y="595" width="130" height="20" as="geometry" />
+        <mxCell id="arrow12" edge="1" parent="1" source="bot" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d79b00;dashed=1;fontSize=11;fillColor=#ffcd28;gradientColor=#ffa500;" target="kb" value="12. Consulta productos">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="560" />
+              <mxPoint x="740" y="730" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        
-        <mxCell id="leg4" value="🔵 Cliente  🔴 Red  🟣 Servidor  🟢 Speech  🟡 IA" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="180" y="555" width="150" height="40" as="geometry" />
+        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#6b7280;strokeWidth=1.5;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#ffffff;spacingTop=8;" value="Cómo leer el diagrama" vertex="1">
+          <mxGeometry height="185" width="520" x="-530" y="397.5" as="geometry" />
         </mxCell>
-        
+        <mxCell id="leg1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="1-5: el cliente envía audio y el backend lo prepara para Azure Speech." vertex="1">
+          <mxGeometry height="22" width="470" x="-500" y="423" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="6-8: el texto transcrito se usa para consultar el modelo GPT y obtener la respuesta." vertex="1">
+          <mxGeometry height="22" width="470" x="-500" y="451" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="9-11: la respuesta se convierte nuevamente en audio y se devuelve al navegador." vertex="1">
+          <mxGeometry height="22" width="470" x="-500" y="479" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="Línea continua = envío principal. Línea punteada = respuesta o consulta auxiliar." vertex="1">
+          <mxGeometry height="22" width="470" x="-500" y="507" as="geometry" />
+        </mxCell>
+        <mxCell id="glossary" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#6b7280;strokeWidth=1.5;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#ffffff;spacingTop=8;" value="Glosario y convenciones" vertex="1">
+          <mxGeometry height="280" width="760" x="570" y="870" as="geometry" />
+        </mxCell>
+        <mxCell id="gl1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="Base de productos: información comercial del catálogo. Ejemplo: precio, presentación y stock de Tamal Tolimense." vertex="1">
+          <mxGeometry height="28" width="710" x="595" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="gl2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="Base para el asesor: conocimiento de atención y operación. Ejemplo: cómo saludar, cómo recomendar y cómo manejar objeciones." vertex="1">
+          <mxGeometry height="28" width="710" x="595" y="942" as="geometry" />
+        </mxCell>
+        <mxCell id="gl3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="STT: Speech to Text. Convierte audio a texto." vertex="1">
+          <mxGeometry height="22" width="700" x="595" y="978" as="geometry" />
+        </mxCell>
+        <mxCell id="gl4" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="TTS: Text to Speech. Convierte texto a audio." vertex="1">
+          <mxGeometry height="22" width="700" x="595" y="1002" as="geometry" />
+        </mxCell>
+        <mxCell id="gl5" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="WebM: formato de audio/video usado por el navegador para grabar." vertex="1">
+          <mxGeometry height="22" width="700" x="595" y="1026" as="geometry" />
+        </mxCell>
+        <mxCell id="gl6" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="WAV: formato de audio sin compresión, más conveniente para transcripción." vertex="1">
+          <mxGeometry height="22" width="700" x="595" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="gl7" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="MP3: formato de audio comprimido usado para devolver la respuesta de voz." vertex="1">
+          <mxGeometry height="22" width="700" x="595" y="1074" as="geometry" />
+        </mxCell>
+        <mxCell id="gl8" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#e5e7eb;" value="HTTPS: canal seguro entre el navegador y el punto de entrada público." vertex="1">
+          <mxGeometry height="22" width="700" x="595" y="1098" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
