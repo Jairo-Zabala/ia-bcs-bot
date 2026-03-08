@@ -20,7 +20,22 @@ El **Asesor Virtual del Banco Caja Social** es un chatbot conversacional con cap
 ## 🏗️ Arquitectura del Sistema
 
 ### Diagrama de Arquitectura
-📊 [Ver diagrama interactivo en FigJam](https://www.figma.com/online-whiteboard/create-diagram/1bb34c84-71f6-401a-8520-a40c0bacb3a2?utm_source=other&utm_content=edit_in_figjam)
+📊 [Ver diagrama interactivo en FigJam](https://www.figma.com/online-whiteboard/create-diagram/a2742978-93fc-4335-8780-848fe84188f8?utm_source=other&utm_content=edit_in_figjam)
+
+### Flujo de Datos (numerado)
+1. **Micrófono** → WebM Audio → Flask
+2. **Interfaz Web** → HTTPS → Cloudflare Tunnel
+3. **Tunnel** → HTTP:5000 → Flask + Gunicorn
+4. **Flask** → WebM → pydub + FFmpeg (conversión)
+5. **pydub** → WAV → Azure STT
+6. **STT** → Texto transcrito → Flask
+7. **Flask** → Mensaje usuario → Bot Engine
+8. **Bot Engine** → Chat API → Azure OpenAI
+9. **OpenAI** → Respuesta IA → Bot Engine
+10. **Bot Engine** → Texto respuesta → Flask
+11. **Flask** → Texto → Azure TTS
+12. **TTS** → Audio MP3 48kHz → Flask
+13. **Flask** → Audio Stream → Altavoz
 
 ### Componentes
 
@@ -261,6 +276,37 @@ az vm deallocate --resource-group MyLowCostVM_group --name MyLowCostVM
 ## 📞 Contacto
 
 **Repositorio**: https://github.com/Jairo-Zabala/ia-bcs-bot
+
+---
+
+## 📖 Glosario de Conceptos
+
+| Término | Descripción |
+|---------|-------------|
+| **Azure OpenAI** | Servicio de Microsoft que permite usar modelos de OpenAI (como GPT-4) en la nube de Azure con seguridad empresarial. |
+| **GPT-4o-mini** | Modelo de lenguaje de OpenAI optimizado para velocidad y costo, ideal para chatbots. Entiende contexto y genera respuestas naturales. |
+| **TTS (Text-to-Speech)** | Tecnología que convierte texto escrito en audio hablado. Azure ofrece voces neurales que suenan muy naturales. |
+| **STT (Speech-to-Text)** | Tecnología que convierte audio hablado en texto escrito. Permite que los usuarios hablen en lugar de escribir. |
+| **Andrew DragonHD** | Voz neural de Azure basada en LLMs que detecta automáticamente el tono emocional del texto y ajusta la entonación. |
+| **SSML** | Speech Synthesis Markup Language. Lenguaje XML para controlar cómo se pronuncia el texto (velocidad, tono, pausas). |
+| **Flask** | Framework web de Python, ligero y flexible, usado para crear APIs y servir la interfaz web. |
+| **Gunicorn** | Servidor HTTP para Python que permite manejar múltiples solicitudes simultáneas en producción. |
+| **Cloudflare Tunnel** | Servicio que crea un túnel seguro HTTPS hacia tu servidor sin necesidad de abrir puertos o configurar certificados SSL. |
+| **WebM** | Formato de audio/video usado por navegadores. El micrófono del navegador graba en este formato. |
+| **WAV** | Formato de audio sin compresión requerido por Azure Speech para transcripción. |
+| **pydub** | Librería Python para manipular audio. Usada para convertir WebM a WAV. |
+| **FFmpeg** | Herramienta de línea de comandos para procesar audio/video. pydub lo usa internamente. |
+| **Systemd** | Sistema de Linux para gestionar servicios. Permite que la app se inicie automáticamente al encender la VM. |
+| **VM (Virtual Machine)** | Computadora virtual en la nube. Ejecuta el servidor Python 24/7. |
+| **API** | Application Programming Interface. Forma estándar de comunicación entre sistemas (ej: `/chat`, `/voz`). |
+| **Endpoint** | URL específica de una API que realiza una función (ej: `POST /transcribe` convierte audio a texto). |
+| **Token** | Unidad de texto que procesan los modelos de IA. ~4 caracteres en español. Se cobra por tokens procesados. |
+| **Latencia** | Tiempo que tarda el sistema en responder. Menor latencia = mejor experiencia de usuario. |
+| **Cache** | Almacenamiento temporal de respuestas frecuentes para evitar reprocesar y ahorrar costos. |
+| **AKS** | Azure Kubernetes Service. Plataforma para desplegar aplicaciones escalables en contenedores. |
+| **CDN** | Content Delivery Network. Red de servidores que acelera la entrega de contenido estático. |
+| **WAF** | Web Application Firewall. Protege contra ataques web comunes (SQL injection, XSS, etc). |
+| **SFC** | Superintendencia Financiera de Colombia. Entidad que regula el sector financiero. |
 
 ---
 
