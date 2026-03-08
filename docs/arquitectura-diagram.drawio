@@ -1,0 +1,182 @@
+<mxfile host="app.diagrams.net" modified="2026-03-08T03:07:00.000Z" agent="Mozilla/5.0" version="21.1.0" etag="bcs-bot-arch">
+  <diagram name="Arquitectura BCS Bot" id="bcs-architecture">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- CLIENTE - Navegador -->
+        <mxCell id="cliente-group" value="Cliente (Navegador Web)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="180" height="280" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="mic" value="🎙️&#xa;Micrófono" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="250" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ui" value="🖥️&#xa;Interfaz Web&#xa;(HTML/CSS/JS)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="330" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="speaker" value="🔊&#xa;Altavoz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="70" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- CLOUDFLARE -->
+        <mxCell id="cloudflare-group" value="Cloudflare" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="280" y="300" width="140" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="tunnel" value="🔒&#xa;Quick Tunnel&#xa;HTTPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="295" y="340" width="110" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- AZURE VM -->
+        <mxCell id="vm-group" value="Azure VM - Ubuntu 24.04" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="480" y="180" width="180" height="340" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flask" value="⚙️&#xa;Flask + Gunicorn&#xa;(Puerto 5000)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="230" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="pydub" value="🔄&#xa;pydub + FFmpeg&#xa;(WebM → WAV)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="310" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="bot" value="🤖&#xa;Bot Engine&#xa;(Lógica + KB)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="390" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="kb" value="📚 Knowledge Base&#xa;Productos BCS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="500" y="465" width="140" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- AZURE SPEECH -->
+        <mxCell id="speech-group" value="Azure Speech Services" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="720" y="180" width="180" height="180" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="stt" value="🎤 → 📝&#xa;STT&#xa;Speech-to-Text&#xa;(es-CO)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="740" y="225" width="140" height="55" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="tts" value="📝 → 🔊&#xa;TTS&#xa;Andrew DragonHD&#xa;(48kHz)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d4edda;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="740" y="295" width="140" height="55" as="geometry" />
+        </mxCell>
+        
+        <!-- AZURE OPENAI -->
+        <mxCell id="openai-group" value="Azure OpenAI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="720" y="400" width="180" height="120" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="gpt" value="🧠&#xa;GPT-4o-mini&#xa;(Chat Completions)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="740" y="445" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- FLECHAS / CONEXIONES -->
+        <!-- 1. Mic -> Flask -->
+        <mxCell id="arrow1" value="① WebM" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1" source="mic" target="flask">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- 2. UI -> Tunnel -->
+        <mxCell id="arrow2" value="② HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="ui" target="tunnel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- 3. Tunnel -> Flask -->
+        <mxCell id="arrow3" value="③ HTTP:5000" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#b85450;" edge="1" parent="1" source="tunnel" target="flask">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- 4. Flask -> pydub -->
+        <mxCell id="arrow4" value="④" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1" source="flask" target="pydub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- 5. pydub -> STT -->
+        <mxCell id="arrow5" value="⑤ WAV" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;" edge="1" parent="1" source="pydub" target="stt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- 6. STT -> Flask (texto) -->
+        <mxCell id="arrow6" value="⑥ Texto" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="stt" target="bot">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="253" />
+              <mxPoint x="700" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- 7-8. Bot -> GPT -->
+        <mxCell id="arrow78" value="⑦⑧ Chat API" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1" source="bot" target="gpt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- 9-10. GPT -> Bot (respuesta) -->
+        <mxCell id="arrow910" value="⑨⑩ Respuesta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;dashed=1;" edge="1" parent="1" source="gpt" target="flask">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="550" />
+              <mxPoint x="570" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- 11. Flask -> TTS -->
+        <mxCell id="arrow11" value="⑪ Texto" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;" edge="1" parent="1" source="flask" target="tts">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="660" y="260" />
+              <mxPoint x="660" y="323" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- 12. TTS -> Flask (audio) -->
+        <mxCell id="arrow12" value="⑫ MP3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="tts" target="flask">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="323" />
+              <mxPoint x="680" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- 13. Flask -> Speaker -->
+        <mxCell id="arrow13" value="⑬ Audio Stream" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#d6b656;dashed=1;" edge="1" parent="1" source="flask" target="speaker">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="260" />
+              <mxPoint x="460" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- LEYENDA -->
+        <mxCell id="legend" value="LEYENDA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="520" width="300" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="leg1" value="→ Solicitud (request)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="50" y="545" width="130" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="leg2" value="⇢ Respuesta (response)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="50" y="570" width="130" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="leg3" value="①-⑬ Flujo numerado" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="50" y="595" width="130" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="leg4" value="🔵 Cliente  🔴 Red  🟣 Servidor  🟢 Speech  🟡 IA" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="180" y="555" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
