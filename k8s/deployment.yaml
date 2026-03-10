@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bcs-bot
+  namespace: bcs-bot
+  labels:
+    app: bcs-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bcs-bot
+  template:
+    metadata:
+      labels:
+        app: bcs-bot
+    spec:
+      containers:
+        - name: bcs-bot
+          image: acrbcsbot.azurecr.io/bcs-bot:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: bcs-bot-secrets
+          volumeMounts:
+            - name: secrets-store
+              mountPath: /mnt/secrets-store
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: secrets-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: bcs-bot-keyvault

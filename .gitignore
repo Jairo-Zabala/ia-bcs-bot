@@ -12,6 +12,9 @@ venv/
 # Environment variables
 .env
 
+# Kubernetes secrets (managed via Azure Key Vault)
+k8s/secret.yaml
+
 # Build artifacts
 build/
 dist/
