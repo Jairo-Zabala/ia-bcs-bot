@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCS Bot - Roadmap de Arquitectura</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 30px;
+            color: #1a1a2e;
+        }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header img { height: 48px; vertical-align: middle; margin-right: 12px; }
+        h1 { display: inline; font-size: 26px; color: #0d47a1; vertical-align: middle; }
+        .subtitle { text-align: center; color: #666; font-size: 14px; margin-top: 6px; }
+
+        .icon { height: 36px; width: 36px; vertical-align: middle; }
+        .icon-sm { height: 28px; width: 28px; vertical-align: middle; }
+        .icon-lg { height: 44px; width: 44px; vertical-align: middle; }
+        .bcs { border-radius: 20%; }
+
+        .current-state {
+            background: #fff; border: 2px solid #0d47a1;
+            border-radius: 12px; padding: 20px; margin-bottom: 24px;
+        }
+        .current-state h2 { color: #0d47a1; font-size: 18px; margin-bottom: 15px; }
+        .current-arch {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; flex-wrap: wrap;
+        }
+        .current-box {
+            background: #e3f2fd; border: 1px solid #90caf9; border-radius: 10px;
+            padding: 12px 16px; text-align: center; font-size: 13px; min-width: 130px;
+        }
+        .current-box strong { display: block; font-size: 14px; color: #0d47a1; margin-top: 6px; }
+        .current-box span { color: #555; font-size: 11px; }
+        .arrow { font-size: 22px; color: #0d47a1; font-weight: bold; }
+
+        .phases { display: flex; flex-direction: column; gap: 22px; }
+        .phase {
+            background: #fff; border-radius: 12px; padding: 20px 24px;
+            border-left: 6px solid; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .phase h2 { font-size: 18px; margin-bottom: 4px; }
+        .phase .desc { font-size: 13px; color: #666; margin-bottom: 16px; }
+        .phase-2 { border-color: #2e7d32; }
+        .phase-2 h2 { color: #2e7d32; }
+        .phase-3 { border-color: #e65100; }
+        .phase-3 h2 { color: #e65100; }
+        .phase-4 { border-color: #6a1b9a; }
+        .phase-4 h2 { color: #6a1b9a; }
+
+        .diagram {
+            display: flex; align-items: flex-start; gap: 14px;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .component {
+            border-radius: 10px; padding: 14px 16px; text-align: center;
+            min-width: 150px; max-width: 190px; font-size: 12px;
+        }
+        .component strong { display: block; font-size: 13px; margin: 6px 0 4px; }
+        .comp-green { background: #e8f5e9; border: 1px solid #81c784; }
+        .comp-green strong { color: #2e7d32; }
+        .comp-orange { background: #fff3e0; border: 1px solid #ffb74d; }
+        .comp-orange strong { color: #e65100; }
+        .comp-purple { background: #f3e5f5; border: 1px solid #ce93d8; }
+        .comp-purple strong { color: #6a1b9a; }
+        .comp-blue { background: #e3f2fd; border: 1px solid #90caf9; }
+        .comp-blue strong { color: #0d47a1; }
+
+        .arrow-down { text-align: center; font-size: 26px; color: #999; margin: -2px 0; }
+        .connector { display: flex; align-items: center; font-size: 20px; color: #aaa; }
+
+        .flow {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; flex-wrap: wrap; margin-top: 12px;
+        }
+        .flow-box {
+            border-radius: 8px; padding: 8px 12px; text-align: center;
+            font-size: 11px; min-width: 100px;
+        }
+        .flow-box .icon-sm { margin-bottom: 2px; }
+        .flow-arrow { font-size: 16px; color: #999; }
+
+        .ft-pipeline {
+            background: #fff8e1; border: 2px dashed #ffb74d;
+            border-radius: 10px; padding: 16px 20px; margin-top: 14px;
+        }
+        .ft-pipeline h3 { font-size: 15px; color: #e65100; margin-bottom: 12px; text-align: center; }
+        .pipeline-steps {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; flex-wrap: wrap;
+        }
+        .step {
+            background: #fff; border: 1px solid #ffcc80; border-radius: 8px;
+            padding: 10px 12px; text-align: center; font-size: 11px; min-width: 125px;
+        }
+        .step strong { display: block; font-size: 12px; color: #e65100; margin: 4px 0 2px; }
+        .step-num {
+            background: #e65100; color: #fff; border-radius: 50%;
+            width: 20px; height: 20px; display: inline-flex;
+            align-items: center; justify-content: center;
+            font-size: 11px; font-weight: bold; margin-bottom: 4px;
+        }
+        .step-arrow { font-size: 16px; color: #e65100; }
+
+        .integration {
+            background: #e8eaf6; border: 2px solid #7986cb;
+            border-radius: 12px; padding: 20px; margin-top: 28px;
+        }
+        .integration h2 { color: #283593; font-size: 18px; margin-bottom: 14px; text-align: center; }
+        .arch-row {
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; margin-bottom: 10px; flex-wrap: wrap;
+        }
+        .arch-box {
+            border-radius: 8px; padding: 10px 14px; text-align: center;
+            font-size: 12px; min-width: 140px;
+        }
+        .arch-box strong { display: block; font-size: 13px; margin: 4px 0 2px; }
+        .bg-user { background: #bbdefb; border: 1px solid #64b5f6; }
+        .bg-user strong { color: #0d47a1; }
+        .bg-api { background: #c8e6c9; border: 1px solid #66bb6a; }
+        .bg-api strong { color: #2e7d32; }
+        .bg-ai { background: #ffe0b2; border: 1px solid #ffa726; }
+        .bg-ai strong { color: #e65100; }
+        .bg-data { background: #d1c4e9; border: 1px solid #9575cd; }
+        .bg-data strong { color: #4a148c; }
+        .bg-infra { background: #f8bbd0; border: 1px solid #f06292; }
+        .bg-infra strong { color: #880e4f; }
+        .bg-cache { background: #b2dfdb; border: 1px solid #4db6ac; }
+        .bg-cache strong { color: #00695c; }
+        .vert-arrow { text-align: center; font-size: 20px; color: #7986cb; }
+
+        .legend {
+            margin-top: 20px; display: flex; gap: 16px;
+            justify-content: center; flex-wrap: wrap; font-size: 11px; color: #666;
+        }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+        .footer { text-align: center; margin-top: 24px; font-size: 11px; color: #999; }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════ HEADER ═══════════════ -->
+    <div class="header">
+        <img src="icons/bcs-ico.png" class="bcs" alt="BCS">
+        <h1>Asesor Virtual BCS — Roadmap de Arquitectura</h1>
+        <p class="subtitle">Evolución del proyecto desde MVP hasta modelo fine-tuned en producción</p>
+    </div>
+
+    <!-- ═══════════════ ESTADO ACTUAL ═══════════════ -->
+    <div class="current-state">
+        <h2><img src="icons/bcs-ico.png" class="bcs icon-sm"> Estado Actual (Fase 1 — MVP)</h2>
+        <div class="current-arch">
+            <div class="current-box">
+                <img src="icons/azure-users.svg" class="icon">
+                <strong>Cliente</strong>
+                <span>Web / CLI / Voz</span>
+            </div>
+            <span class="arrow">→</span>
+            <div class="current-box">
+                <img src="icons/azure-app-service.svg" class="icon">
+                <strong>Flask Server</strong>
+                <span>web_server.py</span>
+            </div>
+            <span class="arrow">→</span>
+            <div class="current-box">
+                <img src="icons/azure-bot.svg" class="icon">
+                <strong>Bot Engine</strong>
+                <span>bot.py + knowledge_base.py<br>(estático, en memoria)</span>
+            </div>
+            <span class="arrow">→</span>
+            <div class="current-box">
+                <img src="icons/azure-openai.svg" class="icon">
+                <strong>Azure OpenAI</strong>
+                <span>GPT-4o-mini</span>
+            </div>
+            <span class="arrow">↔</span>
+            <div class="current-box">
+                <img src="icons/azure-speech.svg" class="icon">
+                <strong>Azure Speech</strong>
+                <span>TTS / STT</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="arrow-down">⬇</div>
+
+    <div class="phases">
+
+        <!-- ═══════════════ FASE 2 ═══════════════ -->
+        <div class="phase phase-2">
+            <h2>🟢 Fase 2 — Inteligencia y Datos</h2>
+            <p class="desc">RAG, persistencia, caché y sesiones individuales</p>
+
+            <div class="diagram">
+                <div class="component comp-green">
+                    <img src="icons/azure-search.svg" class="icon-lg">
+                    <strong>RAG Pipeline</strong>
+                    Reemplaza knowledge_base.py.
+                    Documentos indexados como embeddings en Azure AI Search.
+                </div>
+                <span class="connector">+</span>
+                <div class="component comp-green">
+                    <img src="icons/azure-cosmos.svg" class="icon-lg">
+                    <strong>Base de Datos</strong>
+                    Cosmos DB / PostgreSQL.
+                    Persiste conversaciones, sesiones y métricas.
+                </div>
+                <span class="connector">+</span>
+                <div class="component comp-green">
+                    <img src="icons/azure-redis.svg" class="icon-lg">
+                    <strong>Redis Cache</strong>
+                    Cachea respuestas frecuentes.
+                    Reduce ~30-40% llamadas a OpenAI.
+                </div>
+                <span class="connector">+</span>
+                <div class="component comp-green">
+                    <img src="icons/azure-keyvault.svg" class="icon-lg">
+                    <strong>Sesiones</strong>
+                    Una instancia de chat por usuario (JWT/cookie).
+                    Elimina estado global compartido.
+                </div>
+            </div>
+
+            <div class="flow" style="margin-top: 16px;">
+                <div class="flow-box comp-blue">
+                    <img src="icons/azure-users.svg" class="icon-sm"><br>
+                    <strong>Consulta</strong>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box comp-green">
+                    <img src="icons/azure-redis.svg" class="icon-sm"><br>
+                    <strong>¿En caché?</strong>
+                    Redis lookup
+                </div>
+                <span class="flow-arrow">→ NO →</span>
+                <div class="flow-box comp-green">
+                    <img src="icons/azure-search.svg" class="icon-sm"><br>
+                    <strong>RAG Search</strong>
+                    Recuperar contexto
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box comp-orange">
+                    <img src="icons/azure-openai.svg" class="icon-sm"><br>
+                    <strong>Azure OpenAI</strong>
+                    GPT-4o-mini + RAG
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box comp-green">
+                    <img src="icons/azure-cosmos.svg" class="icon-sm"><br>
+                    <strong>Guardar</strong>
+                    DB + Cache
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box comp-blue">
+                    <img src="icons/azure-users.svg" class="icon-sm"><br>
+                    <strong>Respuesta</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow-down">⬇ Los datos recopilados alimentan la Fase 3</div>
+
+        <!-- ═══════════════ FASE 3 ═══════════════ -->
+        <div class="phase phase-3">
+            <h2>🟠 Fase 3 — Fine-Tuning y Modelo Propio</h2>
+            <p class="desc">Modelo personalizado, clasificación de intenciones y evaluación automatizada</p>
+
+            <div class="diagram">
+                <div class="component comp-orange">
+                    <img src="icons/azure-cognitive.svg" class="icon-lg">
+                    <strong>Intent Classifier</strong>
+                    Clasifica la intención antes del LLM:
+                    FAQ → caché, Producto → RAG, Queja → humano.
+                </div>
+                <span class="connector">+</span>
+                <div class="component comp-orange">
+                    <img src="icons/azure-ml.svg" class="icon-lg">
+                    <strong>Modelo Fine-Tuned</strong>
+                    GPT-4o-mini entrenado con datos reales de BCS.
+                    Sin system prompt extenso.
+                </div>
+                <span class="connector">+</span>
+                <div class="component comp-orange">
+                    <img src="icons/azure-content-safety.svg" class="icon-lg">
+                    <strong>LLM-as-Judge</strong>
+                    Evalúa respuestas: precisión, tono, alucinaciones.
+                    Pipeline automático de calidad.
+                </div>
+            </div>
+
+            <!-- Fine-tuning pipeline -->
+            <div class="ft-pipeline">
+                <h3><img src="icons/azure-ai-studio.svg" class="icon-sm"> Pipeline de Fine-Tuning</h3>
+                <div class="pipeline-steps">
+                    <div class="step">
+                        <div class="step-num">1</div><br>
+                        <img src="icons/azure-cosmos.svg" class="icon-sm">
+                        <strong>Recopilar</strong>
+                        Conversaciones reales de Fase 2
+                    </div>
+                    <span class="step-arrow">→</span>
+                    <div class="step">
+                        <div class="step-num">2</div><br>
+                        <img src="icons/azure-content-safety.svg" class="icon-sm">
+                        <strong>Curar Dataset</strong>
+                        Formato JSONL validado.
+                        Filtrar baja calidad.
+                    </div>
+                    <span class="step-arrow">→</span>
+                    <div class="step">
+                        <div class="step-num">3</div><br>
+                        <img src="icons/azure-openai.svg" class="icon-sm">
+                        <strong>Entrenar</strong>
+                        Azure OpenAI Fine-Tuning API.
+                        Base: GPT-4o-mini.
+                    </div>
+                    <span class="step-arrow">→</span>
+                    <div class="step">
+                        <div class="step-num">4</div><br>
+                        <img src="icons/azure-monitor.svg" class="icon-sm">
+                        <strong>Evaluar</strong>
+                        Base vs. fine-tuned.
+                        Precisión, tono, costo.
+                    </div>
+                    <span class="step-arrow">→</span>
+                    <div class="step">
+                        <div class="step-num">5</div><br>
+                        <img src="icons/azure-aks.svg" class="icon-sm">
+                        <strong>Desplegar</strong>
+                        A/B testing en producción.
+                        Rollback si bajan métricas.
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow" style="margin-top: 16px;">
+                <div class="flow-box comp-blue">
+                    <img src="icons/azure-users.svg" class="icon-sm"><br>
+                    <strong>Consulta</strong>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box comp-orange">
+                    <img src="icons/azure-cognitive.svg" class="icon-sm"><br>
+                    <strong>Intent Classifier</strong>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box" style="background:#fff3e0;border:2px solid #e65100;font-size:11px;">
+                    <img src="icons/azure-bot.svg" class="icon-sm">
+                    <strong style="color:#e65100;">Routing</strong>
+                    FAQ → Cache<br>
+                    Producto → RAG + FT<br>
+                    Queja → Humano
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box comp-orange">
+                    <img src="icons/azure-ml.svg" class="icon-sm"><br>
+                    <strong>Modelo Fine-Tuned</strong>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box comp-orange">
+                    <img src="icons/azure-content-safety.svg" class="icon-sm"><br>
+                    <strong>LLM Judge</strong>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box comp-blue">
+                    <img src="icons/azure-users.svg" class="icon-sm"><br>
+                    <strong>Respuesta</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow-down">⬇</div>
+
+        <!-- ═══════════════ FASE 4 ═══════════════ -->
+        <div class="phase phase-4">
+            <h2>🟣 Fase 4 — Capacidades Avanzadas</h2>
+            <p class="desc">Multi-modal, transaccional, sentimiento y escalamiento inteligente</p>
+
+            <div class="diagram">
+                <div class="component comp-purple">
+                    <img src="icons/azure-vision.svg" class="icon-lg">
+                    <strong>Multi-Modal</strong>
+                    Procesar fotos de cédula, extractos.
+                    GPT-4o Vision para documentos.
+                </div>
+                <span class="connector">+</span>
+                <div class="component comp-purple">
+                    <img src="icons/azure-api-mgmt.svg" class="icon-lg">
+                    <strong>Transaccional</strong>
+                    Integración con core bancario.
+                    Consulta saldo, simulación crédito.
+                </div>
+                <span class="connector">+</span>
+                <div class="component comp-purple">
+                    <img src="icons/azure-cognitive.svg" class="icon-lg">
+                    <strong>Sentimiento</strong>
+                    Análisis en tiempo real.
+                    Escalamiento automático a humano.
+                </div>
+                <span class="connector">+</span>
+                <div class="component comp-purple">
+                    <img src="icons/azure-app-insights.svg" class="icon-lg">
+                    <strong>A/B Testing</strong>
+                    Comparar modelos, prompts y flujos en producción.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ DIAGRAMA INTEGRADO FINAL ═══════════════ -->
+    <div class="integration">
+        <h2><img src="icons/bcs-ico.png" class="bcs icon"> Arquitectura Integrada Final (Todas las Fases)</h2>
+
+        <div class="arch-row">
+            <div class="arch-box bg-user">
+                <img src="icons/azure-users.svg" class="icon">
+                <strong>Cliente Web</strong>Interfaz chat + voz
+            </div>
+            <div class="arch-box bg-user">
+                <img src="icons/azure-vm.svg" class="icon">
+                <strong>Kiosko Oficina</strong>Pantalla autoservicio
+            </div>
+            <div class="arch-box bg-user">
+                <img src="icons/azure-bot.svg" class="icon">
+                <strong>WhatsApp</strong>Canal externo
+            </div>
+        </div>
+        <div class="vert-arrow">⬇ HTTPS / WebSocket</div>
+
+        <div class="arch-row">
+            <div class="arch-box bg-infra">
+                <img src="icons/azure-front-door.svg" class="icon">
+                <strong>Azure Front Door</strong>CDN + WAF + LB Global
+            </div>
+        </div>
+        <div class="vert-arrow">⬇</div>
+
+        <div class="arch-row">
+            <div class="arch-box bg-api">
+                <img src="icons/azure-api-mgmt.svg" class="icon">
+                <strong>API Gateway</strong>Auth, Rate Limit, Routing
+            </div>
+        </div>
+        <div class="vert-arrow">⬇</div>
+
+        <div class="arch-row">
+            <div class="arch-box bg-api">
+                <img src="icons/azure-cognitive.svg" class="icon">
+                <strong>Intent Classifier</strong>Clasificar intención
+            </div>
+            <span style="color:#7986cb; font-size:20px;">→</span>
+            <div class="arch-box bg-cache">
+                <img src="icons/azure-redis.svg" class="icon">
+                <strong>Redis</strong>Cache FAQ
+            </div>
+        </div>
+        <div class="vert-arrow">⬇ (si no está en caché)</div>
+
+        <div class="arch-row">
+            <div class="arch-box bg-ai">
+                <img src="icons/azure-search.svg" class="icon">
+                <strong>RAG Engine</strong>Azure AI Search<br>Embeddings
+            </div>
+            <span style="color:#7986cb; font-size:20px;">→</span>
+            <div class="arch-box bg-ai" style="border: 2px solid #e65100;">
+                <img src="icons/azure-openai.svg" class="icon-lg">
+                <strong>Modelo Fine-Tuned</strong>GPT-4o-mini BCS<br>(Azure OpenAI)
+            </div>
+            <span style="color:#7986cb; font-size:20px;">→</span>
+            <div class="arch-box bg-ai">
+                <img src="icons/azure-content-safety.svg" class="icon">
+                <strong>LLM Judge</strong>Validación calidad
+            </div>
+        </div>
+        <div class="vert-arrow">⬇</div>
+
+        <div class="arch-row">
+            <div class="arch-box bg-ai">
+                <img src="icons/azure-speech.svg" class="icon">
+                <strong>Azure Speech</strong>TTS (Salome / DragonHD)<br>STT (es-CO)
+            </div>
+            <div class="arch-box bg-data">
+                <img src="icons/azure-cosmos.svg" class="icon">
+                <strong>Cosmos DB</strong>Conversaciones<br>Sesiones, Métricas
+            </div>
+            <div class="arch-box bg-data">
+                <img src="icons/azure-app-insights.svg" class="icon">
+                <strong>App Insights</strong>Monitoreo<br>Alertas, Logs
+            </div>
+        </div>
+        <div class="vert-arrow">⬇ (Fase 4)</div>
+
+        <div class="arch-row">
+            <div class="arch-box bg-infra">
+                <img src="icons/azure-api-mgmt.svg" class="icon">
+                <strong>Core Bancario</strong>APIs transaccionales
+            </div>
+            <div class="arch-box bg-infra">
+                <img src="icons/azure-users.svg" class="icon">
+                <strong>Agente Humano</strong>Escalamiento inteligente
+            </div>
+            <div class="arch-box bg-infra">
+                <img src="icons/azure-vision.svg" class="icon">
+                <strong>Vision API</strong>Documentos / OCR
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#bbdefb;"></div> Canales cliente</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#c8e6c9;"></div> Capa API / Routing</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffe0b2;"></div> Capa IA / Modelos</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#d1c4e9;"></div> Datos / Monitoreo</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f8bbd0;"></div> Infraestructura / Integraciones</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#b2dfdb;"></div> Cache</div>
+        </div>
+    </div>
+
+    <p class="footer">
+        <img src="icons/bcs-ico.png" class="bcs" style="height:16px;vertical-align:middle;">
+        Banco Caja Social — Asesor Virtual · Roadmap de Arquitectura · Marzo 2026
+    </p>
+
+</body>
+</html>

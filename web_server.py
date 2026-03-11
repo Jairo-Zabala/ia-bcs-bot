@@ -87,6 +87,20 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/auditoria')
+def auditoria():
+    """Serve the security audit dashboard."""
+    dashboard_path = os.path.join(base_path, 'docs', 'dashboard-auditoria.html')
+    return send_file(dashboard_path, mimetype='text/html')
+
+
+@app.route('/auditoria/icons/<path:filename>')
+def auditoria_icons(filename):
+    """Serve icons for the audit dashboard."""
+    icons_dir = os.path.join(base_path, 'docs', 'icons')
+    return send_file(os.path.join(icons_dir, filename))
+
+
 @app.route('/favicon.ico')
 def favicon():
     """Serve favicon for browser tab."""
