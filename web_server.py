@@ -149,14 +149,17 @@ def transcribe():
         # Save uploaded audio — use mktemp to avoid Windows file locking
         webm_path = os.path.join(tempfile.gettempdir(), f'bcs_{os.getpid()}_{id(request)}.webm')
         audio_file.save(webm_path)
+        print(f'[TRANSCRIBE] webm saved: {webm_path} ({os.path.getsize(webm_path)} bytes)', flush=True)
 
         # Convert webm to wav (Azure Speech SDK requires wav)
         wav_path = webm_path.replace('.webm', '.wav')
         try:
             audio_segment = AudioSegment.from_file(webm_path, format='webm')
             audio_segment.export(wav_path, format='wav')
+            print(f'[TRANSCRIBE] wav exported: {wav_path} ({os.path.getsize(wav_path)} bytes), duration={len(audio_segment)}ms', flush=True)
 
             text = transcribir_audio(wav_path, SPEECH_KEY, SPEECH_REGION)
+            print(f'[TRANSCRIBE] result: {repr(text)}', flush=True)
 
             if text:
                 return jsonify({'text': text, 'status': 'success'})

@@ -145,10 +145,12 @@ def transcribir_audio(
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
         return result.text
     elif result.reason == speechsdk.ResultReason.NoMatch:
-        print("No se pudo entender el audio. Intente de nuevo.")
+        print(f"[STT] NoMatch: {result.no_match_details}", flush=True)
     elif result.reason == speechsdk.ResultReason.Canceled:
         cancellation = result.cancellation_details
-        print(f"[ERROR] Reconocimiento cancelado: {cancellation.reason}")
+        print(f"[STT] Canceled: reason={cancellation.reason}, details={cancellation.error_details}", flush=True)
+    else:
+        print(f"[STT] Unexpected reason: {result.reason}", flush=True)
     return None
 
 
