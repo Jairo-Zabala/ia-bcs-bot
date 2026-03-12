@@ -159,18 +159,48 @@ def transcribe():
             return jsonify({'error': 'No audio file'}), 400
 
         audio_file = request.files['audio']
+        client_mime = request.form.get('mimeType', 'audio/webm')
 
-        # Save uploaded audio — use mktemp to avoid Windows file locking
-        webm_path = os.path.join(tempfile.gettempdir(), f'bcs_{os.getpid()}_{id(request)}.webm')
-        audio_file.save(webm_path)
-        print(f'[TRANSCRIBE] webm saved: {webm_path} ({os.path.getsize(webm_path)} bytes)', flush=True)
+        # Determine extension from client MIME type
+        ext = 'mp4' if 'mp4' in client_mime else 'ogg' if 'ogg' in client_mime else 'webm'
 
-        # Convert webm to wav (Azure Speech SDK requires wav)
-        wav_path = webm_path.replace('.webm', '.wav')
+        # Save uploaded audio with unique temp path
+        audio_path = os.path.join(tempfile.gettempdir(), f'bcs_{os.getpid()}_{id(request)}.{ext}')
+        audio_file.save(audio_path)
+        file_size = os.path.getsize(audio_path)
+        print(f'[TRANSCRIBE] saved: {audio_path} ({file_size} bytes, mime={client_mime})', flush=True)
+
+        # Strip leading null bytes (some browsers produce corrupted headers)
+        with open(audio_path, 'rb') as f:
+            raw = f.read()
+        first_valid = next((i for i, b in enumerate(raw) if b != 0), len(raw))
+        if first_valid > 0:
+            print(f'[TRANSCRIBE] Stripping {first_valid} leading null bytes', flush=True)
+            with open(audio_path, 'wb') as f:
+                f.write(raw[first_valid:])
+
+        # Convert to wav (Azure Speech SDK requires wav)
+        wav_path = audio_path.rsplit('.', 1)[0] + '.wav'
         try:
-            audio_segment = AudioSegment.from_file(webm_path, format='webm')
+            # Try auto-detect first, then explicit formats as fallback
+            audio_segment = None
+            for fmt in [None, ext, 'webm', 'ogg', 'mp4']:
+                try:
+                    audio_segment = AudioSegment.from_file(audio_path, format=fmt)
+                    break
+                except Exception:
+                    continue
+            if audio_segment is None:
+                raise ValueError(f'Could not decode audio (mime={client_mime}, size={file_size})')
+
             audio_segment.export(wav_path, format='wav')
-            print(f'[TRANSCRIBE] wav exported: {wav_path} ({os.path.getsize(wav_path)} bytes), duration={len(audio_segment)}ms', flush=True)
+            rms = audio_segment.rms
+            dbfs = audio_segment.dBFS if rms > 0 else -100
+            print(f'[TRANSCRIBE] wav exported: {wav_path} ({os.path.getsize(wav_path)} bytes), '
+                  f'duration={len(audio_segment)}ms, rms={rms}, dBFS={dbfs:.1f}', flush=True)
+
+            if rms < 50:
+                print(f'[TRANSCRIBE] WARNING: Audio is essentially silence (rms={rms})', flush=True)
 
             text = transcribir_audio(wav_path, SPEECH_KEY, SPEECH_REGION)
             print(f'[TRANSCRIBE] result: {repr(text)}', flush=True)
@@ -181,7 +211,7 @@ def transcribe():
                 return jsonify({'text': '', 'status': 'no_speech'})
 
         finally:
-            for f in [webm_path, wav_path]:
+            for f in [audio_path, wav_path]:
                 try:
                     if os.path.exists(f):
                         os.unlink(f)

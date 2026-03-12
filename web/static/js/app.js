@@ -29,7 +29,18 @@ let currentAudio = null;
 async function startRecording() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
+
+        // Pick the best supported audio MIME type
+        const preferredTypes = [
+            'audio/webm;codecs=opus',
+            'audio/webm',
+            'audio/ogg;codecs=opus',
+            'audio/mp4',
+        ];
+        const mimeType = preferredTypes.find(t => MediaRecorder.isTypeSupported(t)) || '';
+        mediaRecorder = mimeType
+            ? new MediaRecorder(stream, { mimeType })
+            : new MediaRecorder(stream);
         audioChunks = [];
 
         mediaRecorder.ondataavailable = (e) => {
@@ -40,7 +51,10 @@ async function startRecording() {
             // Stop all mic tracks
             stream.getTracks().forEach(t => t.stop());
 
-            const blob = new Blob(audioChunks, { type: 'audio/webm' });
+            const actualMime = mediaRecorder.mimeType || 'audio/webm';
+            const ext = actualMime.includes('mp4') ? 'mp4'
+                      : actualMime.includes('ogg') ? 'ogg' : 'webm';
+            const blob = new Blob(audioChunks, { type: actualMime });
             if (blob.size === 0) {
                 clearStatus();
                 return;
@@ -50,7 +64,8 @@ async function startRecording() {
 
             // Send audio to server for transcription
             const formData = new FormData();
-            formData.append('audio', blob, 'recording.webm');
+            formData.append('audio', blob, `recording.${ext}`);
+            formData.append('mimeType', actualMime);
 
             try {
                 const response = await fetch(`${API_BASE}/transcribe`, {
@@ -73,10 +88,26 @@ async function startRecording() {
             }
         };
 
+        // Audio level monitor for visual feedback
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const analyserNode = audioCtx.createAnalyser();
+        const sourceNode = audioCtx.createMediaStreamSource(stream);
+        sourceNode.connect(analyserNode);
+        analyserNode.fftSize = 256;
+        const levelData = new Uint8Array(analyserNode.frequencyBinCount);
+        const levelInterval = setInterval(() => {
+            analyserNode.getByteFrequencyData(levelData);
+            const avg = levelData.reduce((a, b) => a + b, 0) / levelData.length;
+            const glow = Math.min(avg * 1.5, 40);
+            micBtn.style.boxShadow = `0 0 ${glow}px rgba(220, 50, 50, 0.7)`;
+        }, 100);
+
         mediaRecorder.start();
         isRecording = true;
         micBtn.classList.add('recording');
-        setStatus('Grabando...', true);
+        micBtn._levelInterval = levelInterval;
+        micBtn._audioCtx = audioCtx;
+        setStatus('Grabando... (hable ahora)', true);
 
     } catch (err) {
         console.error('Microphone error:', err);
@@ -89,6 +120,10 @@ function stopRecording() {
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
         mediaRecorder.stop();
     }
+    // Cleanup audio level monitor
+    if (micBtn._levelInterval) clearInterval(micBtn._levelInterval);
+    if (micBtn._audioCtx) micBtn._audioCtx.close().catch(() => {});
+    micBtn.style.boxShadow = '';
     isRecording = false;
     micBtn.classList.remove('recording');
 }
